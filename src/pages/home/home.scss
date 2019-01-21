@@ -1,13 +1,16 @@
 page-home {
     .body {
-        background-color: #72b7e5;
+        // background-color: #72b7e5;
+        background-image: "../assets/imgs/logo.png";
     }
     .button {
-        margin-top: 50px;
+        margin-top: 10%;
+        width: 100%;
     }
     .container {
-        margin-top: 140px;
-        background-color: #72b7e5;
+        margin-top: 20%;
+        // background-color: #72b7e5;
+        background-image: "../assets/imgs/logo.png";
         display: flex;
         justify-content: center;
         align-items: center;
@@ -23,4 +26,39 @@ page-home {
         text-align: center;
         align-items: center
     }
+
+    .splash-bg {
+        position: relative;
+        background: url('../assets/imgs/splashbg.png') no-repeat transparent;
+        background-size: cover;
+        height: 45%;
+        z-index: 1;
+        background-repeat: repeat-x;
+        animation: animatedBackground 40s linear infinite;
+      }
+    
+      @keyframes animatedBackground {
+        from { background-position: 0 0; }
+        to { background-position: 100% 0; }
+      }
+    
+      .splash-info {
+        position: relative;
+        z-index: 2;
+        margin-top: -60%;
+        text-align: center;
+      }
+      .splash-logo {
+        margin: auto;
+        background: url('../assets/imgs/logo.png') repeat transparent;
+        background-size: 100%;
+        width: 128px;
+        height: 128px;
+      }
+      .splash-intro {
+        font-size: 18px;
+        font-weight: bold;
+        max-width: 80%;
+        margin: auto;
+      }
 }

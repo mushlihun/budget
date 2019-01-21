@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Menu</ion-title>
+    <ion-title>Bahan Baku</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -10,7 +10,7 @@
       <h3>PT. Gerbang Duabelas</h3>
       <div class="cart">
         <ion-icon name="basket"></ion-icon>
-        <h4>{{total || 0}}€</h4>
+        <h4>Rp{{total || 0}}</h4>
       </div>
     </div>
 </div>
@@ -19,7 +19,7 @@
       <button no-lines (click)="_toggleCategory(catId)">
         <div class="catContainer">
           <ion-img width="100" height="100" src="{{categories.img}}"></ion-img>
-          <h2>{{categories.name}}</h2>
+          <h2>{{categories.blok}}</h2>
         </div>
       </button>
     <ion-list  *ngIf="categories.products && categories.open">
@@ -27,9 +27,8 @@
         <ion-thumbnail item-start (click)="_productModal(catId, productId)">
           <img src="{{product.img}}">
         </ion-thumbnail>
-        <h2>{{categories.blok}}</h2>
         <h3 class="name" (click)="_productModal(catId, productId)">{{product.name}}</h3>
-        <p>{{product.price}}€</p>
+        <p>Rp{{product.price}}</p>
         <div clear item-end>
           <button class="counterButton" (click)="_addToCart(catId, productId)">+</button>
             <span class="counter">{{product.quantity || 0}}</span>
@@ -47,7 +46,7 @@
   </div>
 </div> -->
 <ion-fab bottom right>
-  <button ion-fab [color]="total && total > 0 ? 'default' : 'primary'" text-center (click)="_onOrder()">Save</button>
+  <button ion-fab [color]="total && total > 0 ? 'default' : 'primary'" text-center (click)="_onOrder()">Ok</button>
 </ion-fab>
 </ion-content>
 

@@ -64,7 +64,8 @@ _deleteFromCart = (catId, productId) => {
   :this.menu[catId].products[productId].quantity - 1;
 
   const itemToRemove = this.cart.findIndex(item => 
-    item.name === this.menu[catId].products[productId].name);
+    // item.name === this.menu[catId].products[productId].name);
+    item.blok === this.menu[catId].products[productId].name);
     if(this.cart[itemToRemove] && this.cart[itemToRemove].quantity >= 0) {
       this.cart.splice(itemToRemove, 1);
     }

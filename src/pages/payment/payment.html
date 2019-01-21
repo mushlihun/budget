@@ -1,14 +1,14 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Payment</ion-title>
+    <ion-title>Budget</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="body">
   <div class="titleContainer">
-    <h2 padding>Mon Panier</h2>
+    <h2 padding>Total Budget</h2>
     <button ion-button text-center color="secondary" (click)="_goBack()">
-      Modifier
+      Ubah
     </button>
   </div>
   <ion-list  *ngIf="cart">
@@ -18,10 +18,10 @@
             <img src="{{product.img}}">
           </ion-thumbnail>
           <h3 class="name">{{product.name}}</h3>
-          <p>{{product.price}}€</p>
+          <p>Rp{{product.price}}</p>
           <div clear item-end>
             <div clear item-end>
-              Qté: {{product.quantity}} ({{product.quantity * product.price}}$)
+              Qty: Rp {{product.quantity}} ({{product.quantity * product.price}})
             </div>
           </div>
         </ion-item>
@@ -43,9 +43,9 @@
     <div class="orderContainer">
       <div class="orderButtonContainer">
         <div class="price">
-          <h4>Total: {{total}}$</h4>
+          <h4>Total: Rp{{total}}</h4>
         </div>
-        <button ion-button text-center (click)="_onPay()">Payer</button>
+        <button ion-button text-center (click)="_onPay()">Simpan</button>
       </div>
     </div>
 </ion-content>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 //Service
-import { MenuService } from '../../services/menu.service';
+// import { MenuService } from '../../services/menu.service';
 //Models
 import { Product } from '../../models/menu.model'
 
