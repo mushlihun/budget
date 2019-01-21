@@ -18,10 +18,12 @@ import { TabsPage } from '../pages/tabs/tabs';
 //Services
 import { MenuService } from '../services/menu.service';
 import { OrdersService } from '../services/orders.service';
-
+import { ApiHelper } from '../config/global';
+import { GlobalServiceProvider } from '../providers/global-service/global-service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { AuthProvider } from '../providers/auth/auth';
 
 @NgModule({
   declarations: [
@@ -53,11 +55,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     TabsPage,
   ],
   providers: [
+    ApiHelper,
+    AuthProvider,
+    GlobalServiceProvider,
     MenuService,
     OrdersService,
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthProvider
   ]
 })
 export class AppModule {}
