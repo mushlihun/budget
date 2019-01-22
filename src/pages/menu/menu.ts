@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
-import  { Http } from '@angular/http';
-import { NavController, NavParams, ModalController, Modal, ModalOptions } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions } from 'ionic-angular';
 //Pages
 import { PaymentPage } from '../payment/payment';
 import  { ProductModalPage } from '../product-modal/product-modal'; 
 import 'rxjs/add/operator/map';
 //Service
-import { MenuService } from '../../services/menu.service';
+// import { MenuService } from '../../services/menu.service';
+import { AuthProvider } from '../../providers/auth/auth';
+import { GlobalServiceProvider } from '../../providers/global-service/global-service';
 //Models
-import { Categories } from '../../models/menu.model'
+import { Categories } from '../../models/menu.model';
+import { Storage } from '@ionic/storage';
+@IonicPage()
 @Component({
   selector: 'page-menu',
   templateUrl: 'menu.html'
@@ -16,19 +19,40 @@ import { Categories } from '../../models/menu.model'
 export class MenuPage {
   menu: Categories[];
   cart: any[] = [];
+  tahapan: any = [];
   total: number;
 
   constructor(
+    private auth: AuthProvider,
+    private globalService: GlobalServiceProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
-    private menuService: MenuService,
+    // private menuService: MenuService,
+    private storage: Storage,
     private modalCtrl: ModalController
   ) {
-    this.menuService.getMenu(navParams.get('restaurant'))
-    .then(menu => {
-      this.menu = menu.categories;
-    });
+    // this.menuService.getMenu(navParams.get('restaurant'))
+    // .then(menu => {
+    //   this.menu = menu.categories;
+    // });
  }
+
+ ionViewDidEnter(){
+  this.getTahapan();
+ }
+
+ getTahapan() {
+  this.storage.get('token').then((data) => {
+    this.auth.tahapan(data).subscribe((resp) => {
+      console.log('tahapan: ', resp.tahapan);
+      this.tahapan = resp.tahapan;
+  }, (err) => {
+    let error = err.json();
+    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+    console.log(err);
+  });
+});
+}
 
 /**
   * Méthode qui prend les indexs des catégories et des produits 
@@ -93,7 +117,7 @@ _deleteFromCart = (catId, productId) => {
 _productModal = (catId, productId) => {
   const modalOptions: ModalOptions = { enableBackdropDismiss: true, showBackdrop: true};
   const productModal: Modal = this.modalCtrl.create(ProductModalPage, { 
-    product: this.menu[catId].products[productId] 
+    product: this.tahapan[catId].products[productId] 
   }, modalOptions);
    productModal.present();
    productModal.onWillDismiss((param) => {  
@@ -122,9 +146,9 @@ _productModal = (catId, productId) => {
     * @param {number} i
     */
   _toggleCategory = (i) => {
-    this.menu[i].open = !this.menu[i].open;
-    this.menu.forEach(item => {
-      if(item !== this.menu[i]) {
+    this.tahapan[i].open = !this.tahapan[i].open;
+    this.tahapan.forEach(item => {
+      if(item !== this.tahapan[i]) {
         item.open = false;
       }
     });

@@ -7,25 +7,24 @@
 <ion-content class="body">
   <div class="headerContainer">
     <div class="titleContainer">
-      <h3>PT. Gerbang Duabelas</h3>
+      <h3>Total Bahan</h3>
       <div class="cart">
-        <ion-icon name="basket"></ion-icon>
-        <h4>Rp{{total || 0}}</h4>
+        <h4>{{total || 0}}</h4>
       </div>
     </div>
 </div>
 <ion-list class="categoriesList">
-  <ion-list-header *ngFor="let categories of menu; let catId = index" no-lines no-padding no-margin>
+  <ion-list-header *ngFor="let t of tahapan; let catId = index" no-lines no-padding no-margin>
       <button no-lines (click)="_toggleCategory(catId)">
         <div class="catContainer">
-          <ion-img width="100" height="100" src="{{categories.img}}"></ion-img>
-          <h2>{{categories.blok}}</h2>
+          <ion-img width="100" height="100" src="{{'assets/imgs/fanta.ico'}}"></ion-img>
+          <h2>{{t.nama_tahapan}}</h2>
         </div>
       </button>
-    <ion-list  *ngIf="categories.products && categories.open">
-      <ion-item *ngFor="let product of categories.products; let productId = index">
+    <ion-list  *ngIf="t.open">
+      <ion-item *ngFor="let product of bahan; let productId = index">
         <ion-thumbnail item-start (click)="_productModal(catId, productId)">
-          <img src="{{product.img}}">
+          <img src="{{'assets/imgs/fanta.ico'}}">
         </ion-thumbnail>
         <h3 class="name" (click)="_productModal(catId, productId)">{{product.name}}</h3>
         <p>Rp{{product.price}}</p>
@@ -38,13 +37,6 @@
     </ion-list>
     </ion-list-header>
 </ion-list>
-<!-- <div class="orderContainer">
-  <div class="orderButtonContainer">
-    <button ion-button [color]="total && total > 0 ? 'default' : 'light'" text-center (click)="_onOrder()">
-      Save ({{cart.length || 0}} items)
-      </button>
-  </div>
-</div> -->
 <ion-fab bottom right>
   <button ion-fab [color]="total && total > 0 ? 'default' : 'primary'" text-center (click)="_onOrder()">Ok</button>
 </ion-fab>

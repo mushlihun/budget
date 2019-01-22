@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { GlobalServiceProvider } from '../../providers/global-service/global-service';
-import { Storage } from '@ionic/storage';
 import { AuthProvider } from '../../providers/auth/auth';
-
+import { Storage } from '@ionic/storage';
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -27,15 +25,10 @@ export class LoginPage {
 
   constructor(
     private globalService: GlobalServiceProvider,
-    private storage: Storage,
     private auth: AuthProvider,
     public navCtrl: NavController,
     public toastCtrl: ToastController,
-    public translateService: TranslateService) {
-
-    this.translateService.get('LOGIN_ERROR').subscribe((value) => {
-      this.loginErrorString = value;
-    });
+    public storage: Storage) {
 
     this.loginForm = new FormGroup({
 			name: new FormControl('', Validators.required),
@@ -88,7 +81,8 @@ pengawas(accesstoken, id) {
   this.auth.pengawas(accesstoken, id).subscribe((resp) => {
     console.log('pengawas', resp);
     this.storage.set('kodepengawas', resp.pengawas.kode_pengawas);
-    this.navCtrl.push(HomePage);
+    // this.navCtrl.push(HomePage);
+    this.navCtrl.push('HomePage');
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');

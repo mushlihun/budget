@@ -13,10 +13,20 @@
       <h2>Selamat Datang</h2>
       <h3>PT. Gerbang Duabelas</h3>
     </div>
-      <button (click)="_onChoose('classic')" ion-button round class="button">Sarana Bahagia</button>
-      <button (click)="_onChoose('italian')" ion-button round class="button">Hokiland Residence</button>
-      <button (click)="_onChoose('classic')" ion-button round class="button">Teras Hokiland</button>
-      
+      <!-- <button (click)="_onChoose('classic')" ion-button round class="button">Sarana Bahagia</button>
+      <button (click)="_onChoose('italian')" ion-button round class="button">Hokiland Residence</button> -->
+     <div>
+        <ion-list>
+            <button ion-item *ngFor="let item of lokasi; let lokasiId = index" (click)="goBlok(lokasiId)">
+              {{item.nama_lokasi}}
+              <div class="item-note" item-end>
+                {{item.kode_lokasi}}
+              </div>
+            </button>
+          </ion-list>
+     </div> 
     <!-- </div> -->
   </div>
+  <!-- <button (click)="_onChoose('classic')" ion-button round class="button">Sarana Bahagia</button>
+      <button (click)="_onChoose('italian')" ion-button round class="button">Hokiland Residence</button> -->
 </ion-content>

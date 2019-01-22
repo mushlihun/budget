@@ -103,12 +103,12 @@ export class GlobalServiceProvider {
     let myInterval = setInterval(() => {
       loading.dismiss();
       clearInterval(myInterval);
-    }, 1500);
+    }, 500);
   }
 
-  dismissLoader() {
-    return this.loading.dismiss();
-  }
+  // dismissLoader() {
+  //   return this.loading.dismiss();
+  // }
 
   // Alert services
   presentAlert(title, message, text, customClass, callback) {
