@@ -13,7 +13,6 @@ page-menu {
 }
 
 .categoriesList {
-    padding-top: 50px;
     padding-bottom: 50px;
 }
 
@@ -61,12 +60,28 @@ item-md ion-thumbnail img {
     margin-left: 10px;
     width: 60px;
 }
+item-md ion-thumbnail{
+    min-width: 35%;
+    min-height: 35%;
+}
 .list-header-ios {
     margin-bottom: 0px;
 }
 .list-header-md {
     margin-bottom: 0px;
 }
+
+.inputqty{
+    width: 10%;
+    max-height: 15%;
+    padding: 3%;
+    position: absolute;
+    margin-left: -8%;
+    background-color: white;
+    border: none;
+}
+
+
 .name {
     display: flex;
     flex-wrap: wrap;
@@ -95,11 +110,6 @@ item-md ion-thumbnail img {
     align-items: flex-start;
 }
 
-.categoriesList {
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
 .cart {
     display: flex;
     justify-content: space-between;
@@ -120,7 +130,7 @@ item-md ion-thumbnail img {
     background-color: #F6F6F6;
     text-align: center;
     width: 25px;
-    
+    margin-left: 10%;
 }
 h1{
     padding-left: 20px;

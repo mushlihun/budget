@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions } from 'ionic-angular';
 //Pages
-import { PaymentPage } from '../payment/payment';
 import  { ProductModalPage } from '../product-modal/product-modal'; 
 import 'rxjs/add/operator/map';
 //Service
@@ -18,9 +17,13 @@ import { Storage } from '@ionic/storage';
 })
 export class MenuPage {
   menu: Categories[];
+  bahan: any;
   cart: any[] = [];
   tahapan: any = [];
   total: number;
+  jumlah: number;
+  kodebahan: any;
+  bloks: any;
 
   constructor(
     private auth: AuthProvider,
@@ -38,7 +41,14 @@ export class MenuPage {
  }
 
  ionViewDidEnter(){
+ }
+ ionViewDidLoad(){
   this.getTahapan();
+  this.getBahan();
+  this.storage.get('blok').then((data) => {
+    this.bloks = data;
+    console.log('blok: ', data);
+  });
  }
 
  getTahapan() {
@@ -46,6 +56,19 @@ export class MenuPage {
     this.auth.tahapan(data).subscribe((resp) => {
       console.log('tahapan: ', resp.tahapan);
       this.tahapan = resp.tahapan;
+  }, (err) => {
+    let error = err.json();
+    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+    console.log(err);
+  });
+});
+}
+
+getBahan() {
+  this.storage.get('token').then((data) => {
+    this.auth.bahan(data).subscribe((resp) => {
+      console.log('bahan: ', resp.bahan);
+      this.bahan = resp.bahan;
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
@@ -62,14 +85,28 @@ export class MenuPage {
   * @param {number} catId
   * @param {number} productId
   */
-_addToCart = (catId, productId) => {
-  this.menu[catId].products[productId].quantity = 
-  this.menu[catId].products[productId].quantity
-  ? this.menu[catId].products[productId].quantity + 1
-  : 1;
+_addToCart = (productId) => {
 
-  this.cart.push(this.menu[catId].products[productId]);
-  this._totalPrice();
+    this.bahan[productId].quantity = 
+    this.bahan[productId].quantity
+    ? this.bahan[productId].quantity + 1
+    : 1;
+  
+  this.jumlah = this.bahan[productId].quantity;
+  this.kodebahan = this.bahan[productId].kode_bahan;
+  console.log('jumlah bahan: ', this.bahan[productId].quantity);
+  console.log('nama bahan: ', this.bahan[productId].nama_bahan);
+  console.log('productId: ', this.bahan[productId].kode_bahan);
+  this.cart.push(this.bahan[productId]);
+  console.log('this.cart.push: ', this.cart.push());
+  // this._totalPrice();
+   let produk = {
+    kode : this.bahan[productId].kode_bahan,
+    bahan : this.bahan[productId].nama_bahan,
+    qty : this.bahan[productId].quantity,
+    satuan : this.bahan[productId].satuan
+  }
+  console.log('produk: ', produk);
 }
 
 
@@ -81,30 +118,59 @@ _addToCart = (catId, productId) => {
   * @param {number} catId
   * @param {number} productId
   */
-_deleteFromCart = (catId, productId) => {
-  this.menu[catId].products[productId].quantity = 
-  this.menu[catId].products[productId].quantity === 0 
+_deleteFromCart = (productId) => {
+  this.bahan[productId].quantity = 
+  this.bahan[productId].quantity === 0 
   ? 0 
-  :this.menu[catId].products[productId].quantity - 1;
+  :this.bahan[productId].quantity - 1;
 
   const itemToRemove = this.cart.findIndex(item => 
-    // item.name === this.menu[catId].products[productId].name);
-    item.blok === this.menu[catId].products[productId].name);
+    item.name === this.bahan[productId].nama_bahan);
     if(this.cart[itemToRemove] && this.cart[itemToRemove].quantity >= 0) {
       this.cart.splice(itemToRemove, 1);
     }
-    this.total -= this.menu[catId].products[productId].price;
-    this._totalPrice();
+    this.jumlah = this.bahan[productId].quantity;
+    console.log('jumlah bahan setelah dikurang: ', this.jumlah);
+    this.total -= this.bahan[productId].quantity;
+    // this._totalPrice();
   }
+  
+
+  _deleteFromCarts = (catId, productId) => {
+    this.menu[catId].products[productId].quantity = 
+    this.menu[catId].products[productId].quantity === 0 
+    ? 0 
+    :this.menu[catId].products[productId].quantity - 1;
+  
+    const itemToRemove = this.cart.findIndex(item => 
+      // item.name === this.menu[catId].products[productId].name);
+      item.blok === this.menu[catId].products[productId].name);
+      if(this.cart[itemToRemove] && this.cart[itemToRemove].quantity >= 0) {
+        this.cart.splice(itemToRemove, 1);
+      }
+      this.total -= this.menu[catId].products[productId].price;
+      this._totalPrice();
+    }
 
 // redirige vers la page de paiments si le panier contient au moins un produit.
   _onOrder = () => {
-    if(this.cart.length > 0) {
-      this.navCtrl.push(PaymentPage, {
-        cart: this.cart,
-        total: this.total,
-      });
+    let datatotal = {
+      cart: this.cart,
+      total: this.total,
+      jumlah: this.jumlah,
+      kodebahan: this.kodebahan,
+      blokhome: this.bloks
     }
+    console.log('datatotal: ', datatotal);
+    // if(this.cart.length > 0) {
+    //   this.navCtrl.push('PaymentPage', {
+    //     cart: this.cart,
+    //     total: this.total,
+    //     jumlah: this.jumlah,
+    //     kodebahan: this.kodebahan,
+    //     blokhome: this.bloks
+    //   });
+    // }
   }
 
 /**
@@ -115,14 +181,16 @@ _deleteFromCart = (catId, productId) => {
   * @param {number} productId
   */
 _productModal = (catId, productId) => {
+  console.log('catId: ', catId);
+  console.log('productId: ', productId);
   const modalOptions: ModalOptions = { enableBackdropDismiss: true, showBackdrop: true};
   const productModal: Modal = this.modalCtrl.create(ProductModalPage, { 
-    product: this.tahapan[catId].products[productId] 
+    product: this.tahapan[catId].bahan[productId] 
   }, modalOptions);
    productModal.present();
    productModal.onWillDismiss((param) => {  
      if(param.addToCart) {
-      this._addToCart(catId, productId);
+      this._addToCart(productId);
      }
    });
 }
@@ -132,7 +200,7 @@ _productModal = (catId, productId) => {
   */
   _totalPrice = () => {
     this.total = this.cart.length > 0 ? this.cart
-    .map(item => item.price)
+    .map(item => item.nama_bahan)
     .reduce((a, b) => {
       return a+b;
     }) : '0';

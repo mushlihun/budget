@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Slides, Content, Events } from 'io
 import { AuthProvider } from '../../providers/auth/auth';
 import { GlobalServiceProvider } from '../../providers/global-service/global-service';
 import { Storage } from '@ionic/storage';
+import { SuperTabsComponent } from 'ionic2-super-tabs';
 //Models
 // import { AuthProvider } from '../../providers/auth/auth';
 /**
@@ -18,10 +19,12 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'blokhome.html',
 })
 export class BlokhomePage {
+  @ViewChild(SuperTabsComponent) superTabs: SuperTabsComponent;
   @ViewChild('SwipedTabsSlider') SwipedTabsSlider: Slides ;
   @ViewChild('scroll') scroll: Content;
   accesstoken: any;
   bloks: any;
+  blokshome: any = [];
   kontrakheader: any;
   kodelokasi: any;
   isLastPage: boolean = false;
@@ -29,6 +32,11 @@ export class BlokhomePage {
   tabElementWidth_px :number= 50;
   tabs:any=[];
   MenuPage = 'MenuPage';
+  pages = [
+    { pageName: 'MenuPage', title: 'A1', icon: 'flame', id: 'timelineTab'},
+    { pageName: 'MenuPage', title: 'A2', icon: 'help-circle', id: 'profileTab'}
+  ];
+   selectedTabIndex = 0;
 
   constructor(
     private storage: Storage,
@@ -38,7 +46,7 @@ export class BlokhomePage {
     public navParams: NavParams,
     public events: Events) {
     this.tabs=["A1","A2","A3","A4","A5","A6","A7","A8","A9","A10"];
-    this.bloks = this.navParams.get('bloks'); 
+    this.bloks = this.navParams.get('bloks').kode_lokasi; 
     console.log('this.bloks', this.bloks);
     // this.menuService.getMenu(navParams.get('restaurant'))
     // .then(menu => {
@@ -49,13 +57,17 @@ export class BlokhomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BlokhomePage');
+    console.log('bloks', this.bloks);
+    this.nokontrak(this.bloks);
+    this.getBlokhome(this.bloks);
   }
 
   ionViewDidEnter() {
     this.SwipedTabsIndicator = document.getElementById("indicator");
+    this.storage.set('blok', this.bloks);
   }
 
-  onTabSelect(evt: any) {    
+  onTabSelects(evt: any) {    
     switch(evt.index) {
       case 0:
         // this.events.publish('project:apartment');
@@ -71,6 +83,10 @@ export class BlokhomePage {
         break;
     }
   }
+
+  onTabSelect(ev: any) {
+    this.selectedTabIndex = ev.index;
+}
 
   selectTab(index) {
     this.SwipedTabsIndicator.style.webkitTransform = 'translate3d('+(100*index)+'%,0,0)';
@@ -97,7 +113,7 @@ export class BlokhomePage {
   nokontrak(kodelokasi) {
     this.globalService.presentRouteLoader();
     this.storage.get('token').then((data) => {                  
-      this.accesstoken = data[0];
+      this.accesstoken = data;
       console.log('kodelokasi:', kodelokasi);
         this.auth.kh(this.accesstoken, kodelokasi).subscribe((resp) => {
         console.log('no kontrak', resp);
@@ -110,18 +126,32 @@ export class BlokhomePage {
         });
       });
   }
-
     kontrakdetail() {
     this.storage.get('token').then((data) => {                  
       this.accesstoken = data;
         this.auth.kd(this.accesstoken).subscribe((resp) => {
         if(resp.kontrak && resp.kontrak.length > 0) {
-        console.log('tipe kontrak', resp);
           this.isLastPage = true;          
-          this.kontrakheader = resp.kontrak;
+          this.blokshome = resp.kontrak;
+          console.log('tipe blokshome', this.blokshome);
+          console.log('this.pages', this.pages);
         } else {
           this.isLastPage = false;
         }
+      }, (err) => {
+        let error = err.json();
+        this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+        console.log(err);
+        });
+      });
+    }
+
+  getBlokhome(kodelokasi) {
+    this.storage.get('token').then((data) => {                  
+      this.accesstoken = data;
+        this.auth.budgets(this.accesstoken, kodelokasi).subscribe((resp) => {
+        console.log('getBlokhome', resp);
+          let blokhome = resp.kontrak;
       }, (err) => {
         let error = err.json();
         this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');

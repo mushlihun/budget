@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ConfirmationPage } from '../confirmation/confirmation';
 //Services
 import { OrdersService } from '../../services/orders.service';
 
-
+@IonicPage()
 @Component({
   selector: 'page-payment',
   templateUrl: 'payment.html'
@@ -13,6 +13,14 @@ export class PaymentPage {
   cart: any[];
   total: number;
   
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private ordersService: OrdersService,
+  ) {
+    this.cart = this._aggregateCart(navParams.get('cart'));
+    this.total = navParams.get('total');
+  }
    /**
     * Prend le panier en cours, récupère les éléments par type 
     * et les aggrège et renvoie les quantités de chaques produits 
@@ -34,15 +42,6 @@ export class PaymentPage {
     .map(item => item.price * item.quantity)
     .reduce((a, b) => a + b) : 0;
     this.total = newTotal;
-  }
-
-  constructor(
-    public navCtrl: NavController,
-    private navParams: NavParams,
-    private ordersService: OrdersService,
-  ) {
-    this.cart = this._aggregateCart(navParams.get('cart'));
-    this.total = navParams.get('total');
   }
 
   /**

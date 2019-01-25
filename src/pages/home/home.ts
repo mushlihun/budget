@@ -39,9 +39,10 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
+    this.getLokasi();
   }
   ionViewDidEnter() {
-    this.getLokasi();
+    
   }
   
   getLokasi() {

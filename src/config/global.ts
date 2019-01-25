@@ -1,8 +1,8 @@
 let global = {
-    server: "local", // local, dev, production
+    server: "dev", // local, dev, production
     url_local: 'http://127.0.0.1:8000',
-    url_dev: 'https://192.168.1.10:8000',
-    url_production: 'https://api.prodhlp.co.id',
+    url_dev: 'https://api.budget.hokiland.com',
+    url_production: 'https://api.budget.hokiland.com',
     header: {
         formEncodedHeader: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
         applicationJson: {'Content-Type': 'application/json'},

@@ -9,8 +9,14 @@
   <ion-navbar>
     <ion-title>Blok Rumah</ion-title>
   </ion-navbar>
-
-
+  <!-- <ion-list>
+      <button ion-item *ngFor="let item of blokshome; let lokasiId of kontrak[kontrak.blok_no]" title=lokasiId>
+        {{item.blok_no}}
+        <div class="item-note" item-end>
+          {{item.tipe}}
+        </div>
+      </button>
+    </ion-list> -->
 <!-- <ion-content  #scroll scrollX="true" scrollY="false" style="height: 50px;">
     <ion-segment  class="SwipedTabs-tabs"  >
       <ion-segment-button *ngFor='let tab of tabs ; let i = index ' value="IngoreMe" (click)="selectTab(i)"
@@ -71,10 +77,14 @@
   </ion-content> -->
 
   <ion-content>
-      <super-tabs scrollTabs="true" (tabSelect)="onTabSelect($event)">
+      <!-- <super-tabs scrollTabs="true" (tabSelect)="onTabSelect($event)">
         <super-tab [root]="MenuPage" title="A1"></super-tab>
         <super-tab [root]="MenuPage" title="A2"></super-tab>
         <super-tab [root]="MenuPage" title="A3"></super-tab>
         <super-tab [root]="MenuPage" title="A4"></super-tab>    
-      </super-tabs>  
+      </super-tabs> -->
+      <super-tabs scrollTabs="true" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
+          <!-- <super-tab *ngFor="let page of blokshome" [root]="MenuPage"></super-tab> -->
+          <super-tab *ngFor="let page of pages" [root]="page.pageName" [title]="page.title" [id]="page.id"></super-tab>
+        </super-tabs>  
     </ion-content>

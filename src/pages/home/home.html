@@ -17,7 +17,7 @@
       <button (click)="_onChoose('italian')" ion-button round class="button">Hokiland Residence</button> -->
      <div>
         <ion-list>
-            <button ion-item *ngFor="let item of lokasi; let lokasiId = index" (click)="goBlok(lokasiId)">
+            <button ion-item *ngFor="let item of lokasi; let lokasiId of lokasi[lokasi.kode_lokasi]" (click)="goBlok(lokasiId)">
               {{item.nama_lokasi}}
               <div class="item-note" item-end>
                 {{item.kode_lokasi}}

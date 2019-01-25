@@ -49,6 +49,7 @@ export class AuthProvider {
         this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
       }
   }
+
   budget(token) {
     if (this.connectivityService.isOnline()){
         let headers = new Headers();
@@ -57,6 +58,18 @@ export class AuthProvider {
         // headers.append('Accept', 'application/json');
         let options = new RequestOptions({headers: headers});
         return this.http.get(this.api.getApiUrl(Config.apis.budget), options).map(res => res.json());
+      } else {
+        this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
+      }
+  }
+  budgets(token, blok) {
+    if (this.connectivityService.isOnline()){
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Authorization', 'Bearer '+token);
+        // headers.append('Accept', 'application/json');
+        let options = new RequestOptions({headers: headers});
+        return this.http.get(this.api.getApiUrl(Config.apis.budget  + '?blok_no=' + blok), options).map(res => res.json());
       } else {
         this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
       }

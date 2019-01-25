@@ -5,33 +5,27 @@
 </ion-header>
 
 <ion-content class="body">
-  <div class="headerContainer">
-    <div class="titleContainer">
-      <h3>Total Bahan</h3>
-      <div class="cart">
-        <h4>{{total || 0}}</h4>
-      </div>
-    </div>
-</div>
 <ion-list class="categoriesList">
   <ion-list-header *ngFor="let t of tahapan; let catId = index" no-lines no-padding no-margin>
       <button no-lines (click)="_toggleCategory(catId)">
         <div class="catContainer">
-          <ion-img width="100" height="100" src="{{'assets/imgs/fanta.ico'}}"></ion-img>
+          <img width="25" height="25" src="{{'assets/imgs/fanta.ico'}}">
           <h2>{{t.nama_tahapan}}</h2>
         </div>
       </button>
-    <ion-list  *ngIf="t.open">
+    <ion-list  *ngIf="bahan && t.open">
       <ion-item *ngFor="let product of bahan; let productId = index">
         <ion-thumbnail item-start (click)="_productModal(catId, productId)">
-          <img src="{{'assets/imgs/fanta.ico'}}">
+          <img src="{{'assets/imgs/coca.ico'}}">
         </ion-thumbnail>
         <h3 class="name" (click)="_productModal(catId, productId)">{{product.name}}</h3>
-        <p>Rp{{product.price}}</p>
+        <p>{{product.nama_bahan}}</p>
         <div clear item-end>
-          <button class="counterButton" (click)="_addToCart(catId, productId)">+</button>
-            <span class="counter">{{product.quantity || 0}}</span>
-          <button class="counterButton" (click)="_deleteFromCart(catId, productId)">-</button>
+          <button class="counterButton" (click)="_addToCart(productId)">+</button>
+            <!-- <label>Qty</label> -->
+            <span type="number" class="counter">{{product.quantity || 0}}</span>
+            <input [(ngModel)]="product.quantity" placeholder="0" class="inputqty" classtype="number">
+          <button class="counterButton" (click)="_deleteFromCart(productId)">-</button>
         </div>
       </ion-item>
     </ion-list>
