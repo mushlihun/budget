@@ -27,7 +27,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth/auth';
 import { Network } from '@ionic-native/network';
-import { SuperTabsModule, SuperTabsController, /*SuperTabs*/ } from 'ionic2-super-tabs';
+import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-super-tabs';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,7 @@ import { SuperTabsModule, SuperTabsController, /*SuperTabs*/ } from 'ionic2-supe
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    SuperTabsController,
+    // SuperTabsController,
     // SuperTabs
   ]
 })

@@ -19,7 +19,7 @@ export class PaymentPage {
     private ordersService: OrdersService,
   ) {
     this.cart = this._aggregateCart(navParams.get('cart'));
-    this.total = navParams.get('total');
+    this.total = navParams.get('blokhome');
   }
    /**
     * Prend le panier en cours, récupère les éléments par type 

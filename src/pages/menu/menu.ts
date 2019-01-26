@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions, ViewController } from 'ionic-angular';
 //Pages
 import  { ProductModalPage } from '../product-modal/product-modal'; 
 import 'rxjs/add/operator/map';
@@ -23,6 +23,7 @@ export class MenuPage {
   total: number;
   jumlah: number;
   kodebahan: any;
+  nokontrak: any;
   bloks: any;
 
   constructor(
@@ -32,7 +33,8 @@ export class MenuPage {
     public navParams: NavParams,
     // private menuService: MenuService,
     private storage: Storage,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    public viewCtrl: ViewController
   ) {
     // this.menuService.getMenu(navParams.get('restaurant'))
     // .then(menu => {
@@ -48,6 +50,10 @@ export class MenuPage {
   this.storage.get('blok').then((data) => {
     this.bloks = data;
     console.log('blok: ', data);
+  });
+  this.storage.get('nokontrak').then((data) => {
+    this.nokontrak = data;
+    console.log('nokontrak: ', data);
   });
  }
 
@@ -109,6 +115,24 @@ _addToCart = (productId) => {
   console.log('produk: ', produk);
 }
 
+addToCart = (productId) => {
+
+this.jumlah = this.bahan[productId].quantity;
+this.kodebahan = this.bahan[productId].kode_bahan;
+console.log('jumlah bahan: ', this.bahan[productId].quantity);
+console.log('nama bahan: ', this.bahan[productId].nama_bahan);
+console.log('productId: ', this.bahan[productId].kode_bahan);
+this.cart.push(this.bahan[productId]);
+console.log('this.cart.push: ', this.cart.push());
+// this._totalPrice();
+ let produk = {
+  kode : this.bahan[productId].kode_bahan,
+  bahan : this.bahan[productId].nama_bahan,
+  qty : this.bahan[productId].quantity,
+  satuan : this.bahan[productId].satuan
+}
+console.log('produk: ', produk);
+}
 
 /**
   * Méthode qui prend les indexs des catégories et des produits 
@@ -154,6 +178,7 @@ _deleteFromCart = (productId) => {
 
 // redirige vers la page de paiments si le panier contient au moins un produit.
   _onOrder = () => {
+    // this.viewCtrl.dismiss();
     let datatotal = {
       cart: this.cart,
       total: this.total,
@@ -162,15 +187,15 @@ _deleteFromCart = (productId) => {
       blokhome: this.bloks
     }
     console.log('datatotal: ', datatotal);
-    // if(this.cart.length > 0) {
-    //   this.navCtrl.push('PaymentPage', {
-    //     cart: this.cart,
-    //     total: this.total,
-    //     jumlah: this.jumlah,
-    //     kodebahan: this.kodebahan,
-    //     blokhome: this.bloks
-    //   });
-    // }
+    if(this.cart.length > 0) {
+      this.navCtrl.push('PaymentPage', {
+        cart: this.cart,
+        total: this.total,
+        jumlah: this.jumlah,
+        kodebahan: this.kodebahan,
+        blokhome: this.bloks
+      });
+    }
   }
 
 /**

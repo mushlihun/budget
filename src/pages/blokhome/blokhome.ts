@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, Slides, Content, Events } from 'io
 import { AuthProvider } from '../../providers/auth/auth';
 import { GlobalServiceProvider } from '../../providers/global-service/global-service';
 import { Storage } from '@ionic/storage';
-import { SuperTabsComponent } from 'ionic2-super-tabs';
+import { SuperTabsModule } from 'ionic2-super-tabs';
 //Models
 // import { AuthProvider } from '../../providers/auth/auth';
 /**
@@ -19,12 +19,11 @@ import { SuperTabsComponent } from 'ionic2-super-tabs';
   templateUrl: 'blokhome.html',
 })
 export class BlokhomePage {
-  @ViewChild(SuperTabsComponent) superTabs: SuperTabsComponent;
+  // @ViewChild(SuperTabsComponent) superTabs: SuperTabsComponent;
   @ViewChild('SwipedTabsSlider') SwipedTabsSlider: Slides ;
   @ViewChild('scroll') scroll: Content;
   accesstoken: any;
   bloks: any;
-  blokshome: any = [];
   kontrakheader: any;
   kodelokasi: any;
   isLastPage: boolean = false;
@@ -34,9 +33,10 @@ export class BlokhomePage {
   MenuPage = 'MenuPage';
   pages = [
     { pageName: 'MenuPage', title: 'A1', icon: 'flame', id: 'timelineTab'},
-    { pageName: 'MenuPage', title: 'A2', icon: 'help-circle', id: 'profileTab'}
+    { pageName: 'SettingsPage', title: 'A2', icon: 'help-circle', id: 'profileTab'}
   ];
    selectedTabIndex = 0;
+  public blokshome: any = [];
 
   constructor(
     private storage: Storage,
@@ -45,70 +45,25 @@ export class BlokhomePage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public events: Events) {
-    this.tabs=["A1","A2","A3","A4","A5","A6","A7","A8","A9","A10"];
-    this.bloks = this.navParams.get('bloks').kode_lokasi; 
-    console.log('this.bloks', this.bloks);
-    // this.menuService.getMenu(navParams.get('restaurant'))
-    // .then(menu => {
-    //   console.log('pengawas', menu);
-    //   this.menu = menu.categories;
-    // });
+    this.bloks = this.navParams.get('bloks').kode_lokasi;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BlokhomePage');
     console.log('bloks', this.bloks);
-    this.nokontrak(this.bloks);
+    this.kontrakdetail();
     this.getBlokhome(this.bloks);
   }
 
   ionViewDidEnter() {
     this.SwipedTabsIndicator = document.getElementById("indicator");
     this.storage.set('blok', this.bloks);
-  }
-
-  onTabSelects(evt: any) {    
-    switch(evt.index) {
-      case 0:
-        // this.events.publish('project:apartment');
-        // break;
-      case 1:
-        this.events.publish('project:landed');
-        break;
-      case 2:
-        this.events.publish('project:apartment');
-        break;
-      case 3:
-        this.events.publish('project:commercial');
-        break;
-    }
+    this.nokontrak(this.bloks);
   }
 
   onTabSelect(ev: any) {
     this.selectedTabIndex = ev.index;
 }
-
-  selectTab(index) {
-    this.SwipedTabsIndicator.style.webkitTransform = 'translate3d('+(100*index)+'%,0,0)';
-     this.scroll.scrollTo(index*this.tabElementWidth_px,0,500);
-    this.SwipedTabsSlider.slideTo(index, 500);
-  }
-
-  updateIndicatorPosition() {
-    this.scroll.scrollTo(this.SwipedTabsSlider.getActiveIndex()*this.tabElementWidth_px,0,200);
-
-      // this condition is to avoid passing to incorrect index
-    if( this.SwipedTabsSlider.length()> this.SwipedTabsSlider.getActiveIndex())
-    {
-      this.SwipedTabsIndicator.style.webkitTransform = 'translate3d('+(this.SwipedTabsSlider.getActiveIndex() * 100)+'%,0,0)';
-    }
-
-    }
-
-  animateIndicator($event) {
-    if(this.SwipedTabsIndicator)
-         this.SwipedTabsIndicator.style.webkitTransform = 'translate3d(' + (($event.progress* (this.SwipedTabsSlider.length()-1))*100) + '%,0,0)';
-  }
 
   nokontrak(kodelokasi) {
     this.globalService.presentRouteLoader();
@@ -118,7 +73,7 @@ export class BlokhomePage {
         this.auth.kh(this.accesstoken, kodelokasi).subscribe((resp) => {
         console.log('no kontrak', resp);
         this.kontrakheader = resp.kontrak;
-        this.kontrakdetail();
+        this.storage.set('nokontrak', resp.kontrak.no_kontrak);
       }, (err) => {
         let error = err.json();
         this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
@@ -130,11 +85,9 @@ export class BlokhomePage {
     this.storage.get('token').then((data) => {                  
       this.accesstoken = data;
         this.auth.kd(this.accesstoken).subscribe((resp) => {
-        if(resp.kontrak && resp.kontrak.length > 0) {
-          this.isLastPage = true;          
+          if(resp.kontrak && resp.kontrak.length > 0) {
           this.blokshome = resp.kontrak;
-          console.log('tipe blokshome', this.blokshome);
-          console.log('this.pages', this.pages);
+          this.isLastPage = true;
         } else {
           this.isLastPage = false;
         }

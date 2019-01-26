@@ -1,6 +1,8 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Bahan Baku</ion-title>
+    <ion-title style="margin-top: 3%;">No. Kontrak</ion-title><p text-right style="
+    margin-top: -5%;
+    margin-right: 5%;">{{nokontrak}}</p>
   </ion-navbar>
 </ion-header>
 
@@ -20,11 +22,11 @@
         </ion-thumbnail>
         <h3 class="name" (click)="_productModal(catId, productId)">{{product.name}}</h3>
         <p>{{product.nama_bahan}}</p>
-        <div clear item-end>
+        <div clear item-end class="add">
+            <input [(ngModel)]="product.quantity" (change)="addToCart(productId)"  placeholder="0" class="inputqty" text-center classtype="number">
           <button class="counterButton" (click)="_addToCart(productId)">+</button>
             <!-- <label>Qty</label> -->
-            <span type="number" class="counter">{{product.quantity || 0}}</span>
-            <input [(ngModel)]="product.quantity" placeholder="0" class="inputqty" classtype="number">
+            <span type="number" class="counter"></span>
           <button class="counterButton" (click)="_deleteFromCart(productId)">-</button>
         </div>
       </ion-item>

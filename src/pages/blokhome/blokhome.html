@@ -83,8 +83,8 @@
         <super-tab [root]="MenuPage" title="A3"></super-tab>
         <super-tab [root]="MenuPage" title="A4"></super-tab>    
       </super-tabs> -->
-      <super-tabs scrollTabs="true" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
-          <!-- <super-tab *ngFor="let page of blokshome" [root]="MenuPage"></super-tab> -->
-          <super-tab *ngFor="let page of pages" [root]="page.pageName" [title]="page.title" [id]="page.id"></super-tab>
+      <super-tabs *ngIf="isLastPage" scrollTabs="true" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
+          <super-tab *ngFor="let page of blokshome" [root]="MenuPage" [title]="page.blok_no" ></super-tab>
+          <!-- <super-tab *ngFor="let page of pages" [root]="page.pageName" [title]="page.title" [id]="page.id"></super-tab> -->
         </super-tabs>  
     </ion-content>

@@ -9,7 +9,7 @@ import { BlokhomePage } from './blokhome';
   ],
   imports: [
     IonicPageModule.forChild(BlokhomePage),
-    SuperTabsModule
+    SuperTabsModule.forRoot()
   ],
   exports: [
     BlokhomePage

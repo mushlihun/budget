@@ -14,6 +14,7 @@ import { GlobalServiceProvider } from '../../providers/global-service/global-ser
 export class HomePage {
 
   accesstoken: any;
+  blokshome: any = [];
   isLastPage: boolean = false;
   kodepengawas: any;
   kontrakheader: any;
@@ -71,4 +72,5 @@ export class HomePage {
     goBlok(item) {
       this.navCtrl.push('BlokhomePage', {bloks: item});
     }
+    
 }

@@ -4,8 +4,9 @@ import { NavController, NavParams } from 'ionic-angular';
 import { OrdersService } from '../../services/orders.service';
 // Model
 import { Order } from '../../models/menu.model'
+import { IonicPage } from 'ionic-angular';
 
-
+@IonicPage()
 @Component({
   selector: 'orders-page',
   templateUrl: 'orders.html'

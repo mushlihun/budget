@@ -4,8 +4,8 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 // import { MenuService } from '../../services/menu.service';
 //Models
 import { Product } from '../../models/menu.model'
-
-// @IonicPage()
+import { IonicPage } from 'ionic-angular';
+@IonicPage()
 @Component({
   selector: 'page-product-modal',
   templateUrl: 'product-modal.html',
