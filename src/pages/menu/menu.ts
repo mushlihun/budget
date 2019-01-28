@@ -25,6 +25,8 @@ export class MenuPage {
   kodebahan: any;
   nokontrak: any;
   bloks: any;
+  blokno: any;
+  // idxhome:any;
 
   constructor(
     private auth: AuthProvider,
@@ -36,6 +38,7 @@ export class MenuPage {
     private modalCtrl: ModalController,
     public viewCtrl: ViewController
   ) {
+    // this.idxhome = this.navParams.get('idxhome').kode_lokasi;
     // this.menuService.getMenu(navParams.get('restaurant'))
     // .then(menu => {
     //   this.menu = menu.categories;
@@ -49,18 +52,15 @@ export class MenuPage {
   this.getBahan();
   this.storage.get('blok').then((data) => {
     this.bloks = data;
-    console.log('blok: ', data);
   });
   this.storage.get('nokontrak').then((data) => {
     this.nokontrak = data;
-    console.log('nokontrak: ', data);
   });
  }
 
  getTahapan() {
   this.storage.get('token').then((data) => {
     this.auth.tahapan(data).subscribe((resp) => {
-      console.log('tahapan: ', resp.tahapan);
       this.tahapan = resp.tahapan;
   }, (err) => {
     let error = err.json();
@@ -73,7 +73,6 @@ export class MenuPage {
 getBahan() {
   this.storage.get('token').then((data) => {
     this.auth.bahan(data).subscribe((resp) => {
-      console.log('bahan: ', resp.bahan);
       this.bahan = resp.bahan;
   }, (err) => {
     let error = err.json();
@@ -91,47 +90,28 @@ getBahan() {
   * @param {number} catId
   * @param {number} productId
   */
-_addToCart = (productId) => {
+ _addToCart = (catId, productId) => {
+  this.menu[catId].products[productId].quantity = 
+  this.menu[catId].products[productId].quantity
+  ? this.menu[catId].products[productId].quantity + 1
+  : 1;
 
-    this.bahan[productId].quantity = 
-    this.bahan[productId].quantity
-    ? this.bahan[productId].quantity + 1
-    : 1;
-  
+  this.cart.push(this.menu[catId].products[productId]);
+  this._totalPrice();
+}
+
+addToCart = (productId) => {
   this.jumlah = this.bahan[productId].quantity;
-  this.kodebahan = this.bahan[productId].kode_bahan;
-  console.log('jumlah bahan: ', this.bahan[productId].quantity);
-  console.log('nama bahan: ', this.bahan[productId].nama_bahan);
-  console.log('productId: ', this.bahan[productId].kode_bahan);
   this.cart.push(this.bahan[productId]);
   console.log('this.cart.push: ', this.cart.push());
   // this._totalPrice();
-   let produk = {
+  let produk = {
     kode : this.bahan[productId].kode_bahan,
     bahan : this.bahan[productId].nama_bahan,
     qty : this.bahan[productId].quantity,
     satuan : this.bahan[productId].satuan
   }
   console.log('produk: ', produk);
-}
-
-addToCart = (productId) => {
-
-this.jumlah = this.bahan[productId].quantity;
-this.kodebahan = this.bahan[productId].kode_bahan;
-console.log('jumlah bahan: ', this.bahan[productId].quantity);
-console.log('nama bahan: ', this.bahan[productId].nama_bahan);
-console.log('productId: ', this.bahan[productId].kode_bahan);
-this.cart.push(this.bahan[productId]);
-console.log('this.cart.push: ', this.cart.push());
-// this._totalPrice();
- let produk = {
-  kode : this.bahan[productId].kode_bahan,
-  bahan : this.bahan[productId].nama_bahan,
-  qty : this.bahan[productId].quantity,
-  satuan : this.bahan[productId].satuan
-}
-console.log('produk: ', produk);
 }
 
 /**
@@ -178,24 +158,21 @@ _deleteFromCart = (productId) => {
 
 // redirige vers la page de paiments si le panier contient au moins un produit.
   _onOrder = () => {
-    // this.viewCtrl.dismiss();
+  this.storage.get('blokno').then((data) => {
+    let blokno = data;
     let datatotal = {
-      cart: this.cart,
-      total: this.total,
-      jumlah: this.jumlah,
-      kodebahan: this.kodebahan,
-      blokhome: this.bloks
+      produk: this.cart,
+      blokhome: this.bloks,
+      blokno: blokno
     }
     console.log('datatotal: ', datatotal);
     if(this.cart.length > 0) {
       this.navCtrl.push('PaymentPage', {
-        cart: this.cart,
-        total: this.total,
-        jumlah: this.jumlah,
-        kodebahan: this.kodebahan,
-        blokhome: this.bloks
+        produk: this.cart,
+        datatotal
       });
     }
+  });
   }
 
 /**
@@ -215,7 +192,7 @@ _productModal = (catId, productId) => {
    productModal.present();
    productModal.onWillDismiss((param) => {  
      if(param.addToCart) {
-      this._addToCart(productId);
+      this._addToCart(catId, productId);
      }
    });
 }

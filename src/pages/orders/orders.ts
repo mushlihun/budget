@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 // Services
 import { OrdersService } from '../../services/orders.service';
 // Model
 import { Order } from '../../models/menu.model'
-import { IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -19,9 +18,12 @@ export class OrdersPage {
     public navParams: NavParams,
     private ordersService: OrdersService,
   ) {
-   this.orders = this.ordersService.getOrders();
    
  }
 
+ ionViewDidEnter(){
+  this.orders = this.ordersService.getOrders();
+   console.log('order:', this.orders);
+ }
 
 }

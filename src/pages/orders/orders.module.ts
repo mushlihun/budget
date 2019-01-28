@@ -14,4 +14,4 @@ import { OrdersPage } from './orders';
     OrdersPage
   ]
 })
-export class ProductModalPageModule { }
+export class OrdersPageModule { }

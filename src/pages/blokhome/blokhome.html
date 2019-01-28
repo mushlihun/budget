@@ -7,7 +7,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Blok Rumah</ion-title>
+    <ion-title hideBackButton="true" canswipeback="false">Blok Rumah</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="_closeModal()">Close</button>
+    </ion-buttons>
   </ion-navbar>
   <!-- <ion-list>
       <button ion-item *ngFor="let item of blokshome; let lokasiId of kontrak[kontrak.blok_no]" title=lokasiId>
@@ -28,63 +31,8 @@
     <div id='indicator' class="SwipedTabs-indicatorSegment" [ngStyle]="{'width.px': (this.tabElementWidth_px)}" ></div>
   </ion-content> -->
   </ion-header>
-  
-  <!-- <ion-content >
-    <ion-slides #SwipedTabsSlider  (ionSlideDrag)="animateIndicator($event)"
-                (ionSlideWillChange)="updateIndicatorPosition()"
-                (ionSlideDidChange)="updateIndicatorPosition()"
-                (pan)="updateIndicatorPosition()"
-                [pager]="false">
-      <ion-slide>
-        <h1>Page 1 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 2 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 3 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 4 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 5 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 6 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 7 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 8 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 9 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 10 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 11 </h1>
-      </ion-slide>
-      <ion-slide>
-        <h1>Page 12 </h1>
-      </ion-slide>
-    </ion-slides>
-  
-  
-  </ion-content> -->
-
   <ion-content>
-      <!-- <super-tabs scrollTabs="true" (tabSelect)="onTabSelect($event)">
-        <super-tab [root]="MenuPage" title="A1"></super-tab>
-        <super-tab [root]="MenuPage" title="A2"></super-tab>
-        <super-tab [root]="MenuPage" title="A3"></super-tab>
-        <super-tab [root]="MenuPage" title="A4"></super-tab>    
-      </super-tabs> -->
       <super-tabs *ngIf="isLastPage" scrollTabs="true" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
-          <super-tab *ngFor="let page of blokshome" [root]="MenuPage" [title]="page.blok_no" ></super-tab>
-          <!-- <super-tab *ngFor="let page of pages" [root]="page.pageName" [title]="page.title" [id]="page.id"></super-tab> -->
+          <super-tab *ngFor="let page of blokshome; let indexhome of blokshome[kontrak.blok_no]" [root]="MenuPage" [title]="page.blok_no" (click)="click(indexhome)"></super-tab>
         </super-tabs>  
     </ion-content>

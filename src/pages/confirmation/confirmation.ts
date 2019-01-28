@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 @Component({
   selector: 'page-confirmation',
@@ -8,13 +8,16 @@ import { NavController, NavParams } from 'ionic-angular';
 
 export class ConfirmationPage {
   
-  constructor(public navCtrl: NavController, private navParams: NavParams) {
-    setTimeout(() => {
-      this.navCtrl.popToRoot();
-    }, 2000)
+  constructor(public navCtrl: NavController) {
+    // setTimeout(() => {
+    //   // this.navCtrl.popToRoot();
+    //   this.navCtrl.push('HomePage');
+    // // }, 2000)
+    // });
   }
   
   _goHome = () => {
-    this.navCtrl.popToRoot();
+    // this.navCtrl.popToRoot();
+    this.navCtrl.push('HomePage');
   }
 }

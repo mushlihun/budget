@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ConfirmationPage } from '../confirmation/confirmation';
 //Services
 import { OrdersService } from '../../services/orders.service';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -10,16 +11,19 @@ import { OrdersService } from '../../services/orders.service';
   templateUrl: 'payment.html'
 })
 export class PaymentPage {
+  datatotal: any;
   cart: any[];
+  nokontrak: any;
   total: number;
-  
+  blokno: any;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public storage: Storage,
     private ordersService: OrdersService,
   ) {
-    this.cart = this._aggregateCart(navParams.get('cart'));
-    this.total = navParams.get('blokhome');
+    this.cart = this._aggregateCart(navParams.get('produk'));
+    this.datatotal = navParams.get('datatotal');
   }
    /**
     * Prend le panier en cours, récupère les éléments par type 
@@ -86,10 +90,8 @@ export class PaymentPage {
   _addToOrders = () => {
     const lastOrder = {
       date: new Date(),
-      total: this.total,
-      products: this.cart,
+      datatotal: this.datatotal,
     }
-    console.log(lastOrder);
     this.ordersService.newOrder(lastOrder);
   }
 
@@ -101,9 +103,12 @@ export class PaymentPage {
   // Appelle la fonction addToCart et push la view suivante
   _onPay = () => {
     this._addToOrders();
+    let finalOrder = {
+      date: new Date(),
+      datatotal: this.datatotal,
+    }
     this.navCtrl.push(ConfirmationPage, {
-      finalOrder: this.cart,
-      total: this.total,
+      finalOrder
     });
   }
 }

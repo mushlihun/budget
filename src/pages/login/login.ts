@@ -43,21 +43,15 @@ export class LoginPage {
   }
   checkUserLogin() {
     this.storage.get('isLoggedIn').then((loggedIn) => {
-      console.log('isLoggedIn', loggedIn);  
       if (loggedIn === true) {
-        this.navCtrl.push(HomePage);
+        this.navCtrl.setRoot('HomePage');
       }
     });
   }
-  dologin(){
-    this.navCtrl.push(HomePage);
-  }
   // Attempt to login in through our User service
   doLogins() {
-    console.log('authenticate', this.loginForm.value);
     if (this.loginForm.value !== null) {
     this.auth.authenticate(this.loginForm.value).subscribe((resp) => {
-      console.log('authenticate', resp.id);
       this.storage.set('isLoggedIn', true);
       this.storage.set('token', resp.access_token);
       let accesstoken = resp.access_token;
@@ -79,10 +73,8 @@ export class LoginPage {
 
 pengawas(accesstoken, id) {
   this.auth.pengawas(accesstoken, id).subscribe((resp) => {
-    console.log('pengawas', resp);
     this.storage.set('kodepengawas', resp.pengawas.kode_pengawas);
-    // this.navCtrl.push(HomePage);
-    this.navCtrl.push('HomePage');
+    this.navCtrl.setRoot('HomePage');
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');

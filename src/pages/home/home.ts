@@ -51,10 +51,8 @@ export class HomePage {
     Promise.all([this.storage.get('token'), this.storage.get('kodepengawas')]).then((data) => {                  
       this.accesstoken = data[0];
       this.kodepengawas = data[1];
-      console.log('kodepengawas:', this.kodepengawas);
         this.auth.lokasi(this.accesstoken, this.kodepengawas).subscribe((resp) => {
         if(resp.lokasi && resp.lokasi.length > 0) {
-        console.log('lokasi', resp);
           this.isLastPage = true;          
           // this.productLists = res.data.filter((item) => item.product_type.name.toString().toLowerCase().replace(/\s+/g, '') === this.productName.toString().toLowerCase().replace(/\s+/g, ''));          
           this.lokasi = resp.lokasi; //.lokasi.filter((item) => item.nama_lokasi.toString().toLowerCase().replace(/\s+/g, ''));
@@ -69,8 +67,12 @@ export class HomePage {
       });
   }
 
-    goBlok(item) {
-      this.navCtrl.push('BlokhomePage', {bloks: item});
-    }
-    
+  goBlok(item) {
+    this.storage.set('blok', item.kode_lokasi);
+    this.navCtrl.setRoot('BlokhomePage', {bloks: item});
+  }
+
+  goOrder() {
+    this.navCtrl.push('OrdersPage');
+  }
 }

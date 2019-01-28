@@ -7,7 +7,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 // import { SuperTabsModule, SuperTabsController} from 'ionic2-super-tabs';
 //Pages
-// import { ConfirmationPage } from '../pages/confirmation/confirmation';
+import { ConfirmationPage } from '../pages/confirmation/confirmation';
 // import { HomePage } from '../pages/home/home';
 // import { MenuPage } from '../pages/menu/menu';
 // import { OrdersPage } from '../pages/orders/orders';
@@ -31,8 +31,8 @@ import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-supe
 
 @NgModule({
   declarations: [
-    MyApp
-    // ConfirmationPage,
+    MyApp,
+    ConfirmationPage,
     // HomePage,
     // MenuPage,
     // MyApp,
@@ -52,8 +52,8 @@ import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-supe
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
-    // ConfirmationPage,
+    MyApp,
+    ConfirmationPage,
     // HomePage,
     // MenuPage,
     // MyApp,

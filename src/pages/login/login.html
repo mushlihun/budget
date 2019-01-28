@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Login</ion-title>
+    <ion-title text-center>Login</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -22,7 +22,7 @@
         <ion-input type="password" placeholder="Password" formControlName="password" required></ion-input>
     </ion-item>
     <p *ngIf="!loginForm.controls.password.valid  && loginForm.controls.password.dirty && loginForm.controls.password.value == ''">Field is required!</p>
-    <p class="forget-password-text" text-right (click)="resetPassword()">Forget password?</p>
+    <!-- <p class="forget-password-text" text-right (click)="resetPassword()">Forget password?</p> -->
 
       <div padding>
         <button ion-button color="primary" block type="submit">Login</button>

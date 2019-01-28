@@ -1,26 +1,22 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Budget</ion-title>
+    <ion-title text-center>Total Budget</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="body">
-  <div class="titleContainer">
-    <h2 padding>Total Budget</h2>
-    <button ion-button text-center color="secondary" (click)="_goBack()">
-      Ubah
-    </button>
-  </div>
-  <ion-list  *ngIf="cart">
+  <ion-list *ngIf="cart">
       <ion-item-sliding *ngFor="let product of cart; let productId = index" #index>
         <ion-item >
           <ion-thumbnail item-start>
             <img src="{{'assets/imgs/fanta.ico'}}">
           </ion-thumbnail>
           <h3 class="name">{{product.nama_bahan}}</h3>
-          <p>{{product.quantity}}</p>
+          <p>{{nokontrak}}</p>
           <div clear item-end>
             <div clear item-end>
+              <p>{{product.quantity}}</p>
+              <p>{{product.satuan}}</p>
               <!-- Qty: Rp {{product.quantity}} ({{product.quantity * product.price}}) -->
             </div>
           </div>
