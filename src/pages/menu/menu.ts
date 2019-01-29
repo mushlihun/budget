@@ -90,13 +90,14 @@ getBahan() {
   * @param {number} catId
   * @param {number} productId
   */
- _addToCart = (catId, productId) => {
-  this.menu[catId].products[productId].quantity = 
-  this.menu[catId].products[productId].quantity
-  ? this.menu[catId].products[productId].quantity + 1
+ _addToCart = (productId) => {
+  this.bahan[productId].quantity = 
+  this.bahan[productId].quantity
+  ? this.bahan[productId].quantity + 1
   : 1;
-
-  this.cart.push(this.menu[catId].products[productId]);
+  this.jumlah = this.bahan[productId].quantity;
+  console.log('this.jumlah: ', this.jumlah);
+  this.cart.push(this.bahan[productId]);
   this._totalPrice();
 }
 
@@ -192,7 +193,7 @@ _productModal = (catId, productId) => {
    productModal.present();
    productModal.onWillDismiss((param) => {  
      if(param.addToCart) {
-      this._addToCart(catId, productId);
+      this._addToCart(productId);
      }
    });
 }

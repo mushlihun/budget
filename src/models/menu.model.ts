@@ -11,8 +11,16 @@ export class MenuGlobal {
 
 export class Order {
     date: Date;
-    total: number;
-    products: Product[];
+    datatotal: string;
+    // products: Product[];
+    produk: produk[];
+}
+
+export class produk {
+    kode_bahan: string;
+    nama_bahan: string;
+    quantity: number;
+    satuan: string;
 }
 
 export class Product {

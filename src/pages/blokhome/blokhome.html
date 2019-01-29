@@ -32,7 +32,7 @@
   </ion-content> -->
   </ion-header>
   <ion-content>
-      <super-tabs *ngIf="isLastPage" scrollTabs="true" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
+      <super-tabs *ngIf="isLastPage" scrollTabs="true" toolbarBackground="primary" toolbarColor="light" indicatorColor="light" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
           <super-tab *ngFor="let page of blokshome; let indexhome of blokshome[kontrak.blok_no]" [root]="MenuPage" [title]="page.blok_no" (click)="click(indexhome)"></super-tab>
-        </super-tabs>  
+      </super-tabs>  
     </ion-content>

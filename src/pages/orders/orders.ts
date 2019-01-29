@@ -11,19 +11,18 @@ import { Order } from '../../models/menu.model'
   templateUrl: 'orders.html'
 })
 export class OrdersPage {
-  orders: Order[] = [];
-
+  orders: Order[] = [] ;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private ordersService: OrdersService,
   ) {
-   
+    this.orders = this.ordersService.getOrders();    
  }
 
  ionViewDidEnter(){
-  this.orders = this.ordersService.getOrders();
-   console.log('order:', this.orders);
+  console.log('orders:', this.orders);
+  console.log('order:', JSON.stringify(this.orders));
  }
 
 }

@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides, Content, Events, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Slides, Content, Events, ViewController, AlertController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { GlobalServiceProvider } from '../../providers/global-service/global-service';
 import { Storage } from '@ionic/storage';
+// import { SuperTabsComponent } from 'ionic2-super-tabs';
 // import { SuperTabsModule } from 'ionic2-super-tabs';
 //Models
 // import { AuthProvider } from '../../providers/auth/auth';
@@ -40,6 +41,7 @@ export class BlokhomePage {
 
   constructor(
     private storage: Storage,
+    public alertCtrl: AlertController,
     public auth: AuthProvider,
     public globalService: GlobalServiceProvider,
     public navCtrl: NavController, 
@@ -47,6 +49,7 @@ export class BlokhomePage {
     public events: Events,
     public view: ViewController) {
     this.bloks = this.navParams.get('bloks').kode_lokasi;
+    // this.getBlokhome(this.bloks);
   }
 
   ionViewDidLoad() {
@@ -60,7 +63,11 @@ export class BlokhomePage {
   }
 
   onTabSelect(ev: any) {
-    this.selectedTabIndex = ev.index;
+    // this.selectedTabIndex = ev.index;
+    
+      this.selectedTabIndex = ev.index;
+      // this.superTabs.clearBadge(this.blokshome[ev.index].title);
+      // console.log('supertabs', this.blokshome[ev.index].title);
 }
   click(indexhome) {
     this.storage.set('blokno', indexhome.blok_no);

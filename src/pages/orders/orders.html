@@ -5,21 +5,22 @@
   </ion-header>
   
   <ion-content class="body">
-    <ion-list class="ordersContainer" *ngIf="orders">
-      <ion-item-sliding *ngFor="let item of orders">
-        <div>
-          <h2>Tanggal: {{item.date}}</h2>
-          <p>Total: {{item.date}}</p>
-          <ion-item-sliding *ngFor="let data of item.datatotal">
-          <h5>Blok: {{data.blokhome}}</h5>
-          <h5>Blok No: {{data.blokno}}</h5>
+  <ion-list class="ordersContainer" *ngIf="orders">
+    <ion-item-sliding *ngFor="let item of orders">
+      <ion-item>
+        <h2>Tanggal: {{item.date | date: 'shortDate'}}</h2>
+          <p>Blok Rumah: {{item.datatotal.blokhome}}</p>
+          <p>Blok No: {{item.datatotal.blokno}}</p>
+          <ion-item-sliding *ngFor="let data of item.datatotal.produk">
+          <h5>Nama Bahan: {{data.nama_bahan}}</h5>
+          <h5>Jumlah: {{data.quantity}}</h5>
           </ion-item-sliding>
-          </div>
+      </ion-item>
               <!-- <ion-item *ngFor="let product of data.produk">
                   <h3>Nama Bahan: {{product.nama_bahan}}</h3>
                   <ion-note item-end>Jumlah Bahan: {{product.quantity}}</ion-note>
                   <ion-note item-end>Satuan: {{product.satuan}}</ion-note>
               </ion-item> -->
-      </ion-item-sliding>
+            </ion-item-sliding>
     </ion-list>
   </ion-content>

@@ -16,5 +16,11 @@ export class MenuService {
         .then(res => res.json())
         .catch(error => console.log(error));
     }
+    public getOrder = () => {
+        return this.http.get(`../assets/orderan.json`)
+        .toPromise()
+        .then(res => res.json())
+        .catch(error => console.log(error));
+    }
 
 }

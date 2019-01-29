@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'payment.html'
 })
 export class PaymentPage {
-  datatotal: any;
+  datatotal: any[];
   cart: any[];
   nokontrak: any;
   total: number;
@@ -93,6 +93,7 @@ export class PaymentPage {
       datatotal: this.datatotal,
     }
     this.ordersService.newOrder(lastOrder);
+    console.log('lastorder', lastOrder);
   }
 
   // permet de revenir à la view précédente en gardant les éléments du panier
