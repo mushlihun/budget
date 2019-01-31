@@ -11,9 +11,9 @@ export class MenuGlobal {
 
 export class Order {
     date: Date;
-    datatotal: string;
+    datatotal: produk[];
     // products: Product[];
-    produk: produk[];
+    // produk: produk[];
 }
 
 export class produk {

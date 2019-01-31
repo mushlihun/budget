@@ -29,7 +29,10 @@ export class HomePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     ) {
-      this.kodeinfo = this.navParams.get('_params');
+    this.kodeinfo = this.navParams.get('_params');
+    this.storage.get('lokasi').then((data) => {
+      this.getLokasi(data);
+    });
   }
   
   _onChoose = (resto) => {
@@ -40,31 +43,22 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
-    this.getLokasi();
-  }
-  ionViewDidEnter() {
     
   }
+
+  ionViewDidEnter() {
+    this.storage.set('isLoggedIn', true);
+  }
   
-  getLokasi() {
+  getLokasi(data) {
     this.globalService.presentRouteLoader();
-    Promise.all([this.storage.get('token'), this.storage.get('kodepengawas')]).then((data) => {                  
-      this.accesstoken = data[0];
-      this.kodepengawas = data[1];
-        this.auth.lokasi(this.accesstoken, this.kodepengawas).subscribe((resp) => {
-        if(resp.lokasi && resp.lokasi.length > 0) {
-          this.isLastPage = true;          
-          // this.productLists = res.data.filter((item) => item.product_type.name.toString().toLowerCase().replace(/\s+/g, '') === this.productName.toString().toLowerCase().replace(/\s+/g, ''));          
-          this.lokasi = resp.lokasi; //.lokasi.filter((item) => item.nama_lokasi.toString().toLowerCase().replace(/\s+/g, ''));
-        } else {
-          this.isLastPage = false;
-        }
-      }, (err) => {
-        let error = err.json();
-        this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-        console.log(err);
-        });
-      });
+    if(data.lokasi && data.lokasi.length > 0) {
+      this.isLastPage = true;          
+      this.lokasi = data.lokasi;
+      console.log('this.lokasi:', this.lokasi);
+    } else {
+      this.isLastPage = false;
+    }
   }
 
   goBlok(item) {
@@ -75,4 +69,10 @@ export class HomePage {
   goOrder() {
     this.navCtrl.push('OrdersPage');
   }
+
+  logOut() {
+    this.storage.set('isLoggedIn', null);  
+    this.navCtrl.setRoot('LoginPage');
+  }
+
 }

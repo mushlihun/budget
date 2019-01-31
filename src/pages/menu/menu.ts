@@ -10,6 +10,7 @@ import { GlobalServiceProvider } from '../../providers/global-service/global-ser
 //Models
 import { Categories } from '../../models/menu.model';
 import { Storage } from '@ionic/storage';
+import { OrdersService } from '../../services/orders.service';
 @IonicPage()
 @Component({
   selector: 'page-menu',
@@ -26,7 +27,7 @@ export class MenuPage {
   nokontrak: any;
   bloks: any;
   blokno: any;
-  // idxhome:any;
+  produkall: any;
 
   constructor(
     private auth: AuthProvider,
@@ -34,6 +35,7 @@ export class MenuPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     // private menuService: MenuService,
+    private ordersService: OrdersService,
     private storage: Storage,
     private modalCtrl: ModalController,
     public viewCtrl: ViewController
@@ -59,14 +61,17 @@ export class MenuPage {
  }
 
  getTahapan() {
-  this.storage.get('token').then((data) => {
-    this.auth.tahapan(data).subscribe((resp) => {
-      this.tahapan = resp.tahapan;
-  }, (err) => {
-    let error = err.json();
-    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-    console.log(err);
-  });
+  // this.storage.get('token').then((data) => {
+  //   this.auth.tahapan(data).subscribe((resp) => {
+  //     this.tahapan = resp.tahapan;
+  // }, (err) => {
+  //   let error = err.json();
+  //   this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+  //   console.log(err);
+  // });
+// });
+this.storage.get('tahapan').then((data) => {
+  this.tahapan = data.tahapan;
 });
 }
 
@@ -90,22 +95,35 @@ getBahan() {
   * @param {number} catId
   * @param {number} productId
   */
- _addToCart = (productId) => {
-  this.bahan[productId].quantity = 
+ _addToCart = (catId,productId) => {
+  // this.bahan[productId].quantity = 
+  // this.bahan[productId].quantity
+  // ? this.bahan[productId].quantity + 1
+  // : 1;
+  if (this.bahan[productId].kodebahan === this.bahan[catId].kodebahan) {
+    this.bahan[productId].quantity = 
   this.bahan[productId].quantity
   ? this.bahan[productId].quantity + 1
   : 1;
-  this.jumlah = this.bahan[productId].quantity;
-  console.log('this.jumlah: ', this.jumlah);
-  this.cart.push(this.bahan[productId]);
+    this.jumlah = this.bahan[productId].quantity;
+    console.log('addToCart: ',  this.jumlah);
+    this.cart.push(this.bahan[productId]);
+  }
+  // this.jumlah = this.bahan[productId].quantity;
+  console.log('this.jumlah: ',  this.bahan[productId]);
+  // this.cart.push(this.bahan[productId]);
   this._totalPrice();
 }
 
 addToCart = (productId) => {
-  this.jumlah = this.bahan[productId].quantity;
+  if (this.bahan[productId].kodebahan === this.bahan[productId].kodebahan) {
+    this.jumlah = this.bahan[productId].quantity;
+    console.log('addToCart: ',  this.jumlah);
+  }
+  // this.jumlah = this.bahan[productId].quantity;
   this.cart.push(this.bahan[productId]);
   console.log('this.cart.push: ', this.cart.push());
-  // this._totalPrice();
+  this._totalPrice();
   let produk = {
     kode : this.bahan[productId].kode_bahan,
     bahan : this.bahan[productId].nama_bahan,
@@ -113,6 +131,36 @@ addToCart = (productId) => {
     satuan : this.bahan[productId].satuan
   }
   console.log('produk: ', produk);
+  this._addToOrders();
+}
+_aggregateCart = (cart) => {
+  let newCart = [];
+  cart.forEach(function(item) {
+   if(newCart.indexOf(item) < 0) {
+       newCart.push(item);
+    }
+  });
+  console.log('newCart', newCart);
+  this.produkall = newCart;
+  return newCart;
+}
+_addToOrders = () => {
+  this.storage.get('blokno').then((data) => {
+    let blokno = data;
+  let bloks = {
+    // produk: this.cart,
+    blokhome: this.bloks,
+    blokno: blokno
+  }
+  const lastOrder = {
+    date: new Date(),
+    datatotal: bloks,
+    produkall: this.produkall,
+  }
+  this._onOrder();
+  this.ordersService.newOrder(lastOrder);
+  console.log('lastorder', lastOrder);
+  });
 }
 
 /**
@@ -137,41 +185,26 @@ _deleteFromCart = (productId) => {
     this.jumlah = this.bahan[productId].quantity;
     console.log('jumlah bahan setelah dikurang: ', this.jumlah);
     this.total -= this.bahan[productId].quantity;
-    // this._totalPrice();
+    this._totalPrice();
   }
-  
 
-  _deleteFromCarts = (catId, productId) => {
-    this.menu[catId].products[productId].quantity = 
-    this.menu[catId].products[productId].quantity === 0 
-    ? 0 
-    :this.menu[catId].products[productId].quantity - 1;
-  
-    const itemToRemove = this.cart.findIndex(item => 
-      // item.name === this.menu[catId].products[productId].name);
-      item.blok === this.menu[catId].products[productId].name);
-      if(this.cart[itemToRemove] && this.cart[itemToRemove].quantity >= 0) {
-        this.cart.splice(itemToRemove, 1);
-      }
-      this.total -= this.menu[catId].products[productId].price;
-      this._totalPrice();
-    }
 
 // redirige vers la page de paiments si le panier contient au moins un produit.
   _onOrder = () => {
   this.storage.get('blokno').then((data) => {
     let blokno = data;
     let datatotal = {
-      produk: this.cart,
+      // produk: this.cart,
       blokhome: this.bloks,
       blokno: blokno
     }
     console.log('datatotal: ', datatotal);
     if(this.cart.length > 0) {
-      this.navCtrl.push('PaymentPage', {
-        produk: this.cart,
-        datatotal
-      });
+      this._aggregateCart(this.cart);
+      // this.navCtrl.push('PaymentPage', {
+      //   produk: this.cart,
+      //   datatotal
+      // });
     }
   });
   }
@@ -193,7 +226,7 @@ _productModal = (catId, productId) => {
    productModal.present();
    productModal.onWillDismiss((param) => {  
      if(param.addToCart) {
-      this._addToCart(productId);
+      this._addToCart(catId,productId);
      }
    });
 }
@@ -203,7 +236,7 @@ _productModal = (catId, productId) => {
   */
   _totalPrice = () => {
     this.total = this.cart.length > 0 ? this.cart
-    .map(item => item.nama_bahan)
+    .map(item => item.kode_bahan)
     .reduce((a, b) => {
       return a+b;
     }) : '0';

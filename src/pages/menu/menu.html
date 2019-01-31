@@ -24,7 +24,7 @@
         <p>{{product.nama_bahan}}</p>
         <div clear item-end class="add">
             <input [(ngModel)]="product.quantity" (change)="addToCart(productId)"  placeholder="0" class="inputqty" text-center classtype="number">
-          <button class="counterButton" (click)="_addToCart(productId)">+</button>
+          <button class="counterButton" (click)="_addToCart(catId,productId)">+</button>
             <!-- <label>Qty</label> -->
             <span type="number" class="counter"></span>
           <button class="counterButton" (click)="_deleteFromCart(productId)">-</button>

@@ -7,14 +7,14 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 // import { SuperTabsModule, SuperTabsController} from 'ionic2-super-tabs';
 //Pages
-import { ConfirmationPage } from '../pages/confirmation/confirmation';
+// import { ConfirmationPage } from '../pages/confirmation/confirmation';
 // import { HomePage } from '../pages/home/home';
 // import { MenuPage } from '../pages/menu/menu';
 // import { OrdersPage } from '../pages/orders/orders';
 // import { PaymentPage } from '../pages/payment/payment';
 // import { ProductModalPage } from '../pages/product-modal/product-modal';
 // import { SettingsPage } from '../pages/settings/settings';
-// import { TabsPage } from '../pages/tabs/tabs';
+import { TabsPage } from '../pages/tabs/tabs';
 
 
 //Services
@@ -29,10 +29,12 @@ import { AuthProvider } from '../providers/auth/auth';
 import { Network } from '@ionic-native/network';
 import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-super-tabs';
 
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+
 @NgModule({
   declarations: [
     MyApp,
-    ConfirmationPage,
+    // ConfirmationPage,
     // HomePage,
     // MenuPage,
     // MyApp,
@@ -40,7 +42,7 @@ import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-supe
     // PaymentPage,
     // ProductModalPage,
     // SettingsPage,
-    // TabsPage,
+    TabsPage,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +55,7 @@ import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-supe
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ConfirmationPage,
+    // ConfirmationPage,
     // HomePage,
     // MenuPage,
     // MyApp,
@@ -61,7 +63,7 @@ import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-supe
     // PaymentPage,
     // ProductModalPage,
     // SettingsPage,
-    // TabsPage,
+    TabsPage,
   ],
   providers: [
     ApiHelper,
@@ -74,6 +76,7 @@ import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-supe
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
+    SocialSharing,
     // SuperTabsController,
     // SuperTabs
   ]

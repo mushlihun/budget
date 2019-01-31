@@ -1,19 +1,22 @@
 <ion-header>
     <ion-navbar>
-      <ion-title>List Barang</ion-title>
+      <ion-title>Daftar Order</ion-title>
     </ion-navbar>
   </ion-header>
   
   <ion-content class="body">
   <ion-list class="ordersContainer" *ngIf="orders">
-    <ion-item-sliding *ngFor="let item of orders">
+    <ion-item>
+        <h2 item-end>No Kontrak: {{nokontrak}}</h2>
+    </ion-item>
+    <ion-item-sliding *ngFor="let item of orders;  let item = index">
       <ion-item>
         <h2>Tanggal: {{item.date | date: 'shortDate'}}</h2>
           <p>Blok Rumah: {{item.datatotal.blokhome}}</p>
           <p>Blok No: {{item.datatotal.blokno}}</p>
-          <ion-item-sliding *ngFor="let data of item.datatotal.produk">
-          <h5>Nama Bahan: {{data.nama_bahan}}</h5>
-          <h5>Jumlah: {{data.quantity}}</h5>
+          <ion-item-sliding *ngFor="let data of orders.datatotal">
+            <h5>Nama Bahan: {{data.nama_bahan}}</h5>
+            <h5>Jumlah: {{data.quantity}}</h5>
           </ion-item-sliding>
       </ion-item>
               <!-- <ion-item *ngFor="let product of data.produk">
@@ -23,4 +26,5 @@
               </ion-item> -->
             </ion-item-sliding>
     </ion-list>
+    <button ion-button full round (click)="kirimwa()">Kirim ke WA</button>
   </ion-content>

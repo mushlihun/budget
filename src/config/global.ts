@@ -18,6 +18,7 @@ let global = {
         tahapan: "/api/auth/tahapan",
         bahan: "/api/auth/bahan",
         budget: "/api/auth/budget",
+        submit: "/api/auth/budget",
         register: "/api/v1/register",
         uploadPhoto: "/api/v1/register/photo",
         uploadNUP: "/api/v1/nups/photo",

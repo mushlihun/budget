@@ -56,13 +56,21 @@ ion-list ion-list-header {
     padding-bottom: 0px;
 }
 item-md ion-thumbnail img {
-    height: 60px;
+    height: 10%;
     margin-left: 10px;
-    width: 60px;
+    width: 10%;
+}
+.item-md ion-thumbnail ion-img, .item-md ion-thumbnail img {
+    width: 30px;
+    height: 30px;
+}
+.item-md ion-thumbnail {
+    min-width: 8%;
+    min-height: 20px;
 }
 item-md ion-thumbnail{
-    min-width: 35%;
-    min-height: 35%;
+    min-width: 15%;
+    min-height: 15%;
 }
 .list-header-ios {
     margin-bottom: 0px;
@@ -72,13 +80,14 @@ item-md ion-thumbnail{
 }
 
 .inputqty{
-    top: 10%;
-    width: 14%;
-    max-height: 15%;
+    top: 25%;
+    width: 15%;
+    max-height: 50%;
     position: absolute;
-    background-color: white;
     border: none;
-    text-align: center;
+    margin-left: -5%;
+    font-size: 1.8em;
+    background-color: transparent !important;
 }
 
 
@@ -126,12 +135,12 @@ item-md ion-thumbnail{
 .counterButton {
     font-size: 2em;
     border: 1px solid #F6F6F6;
-    border-radius: 50%;
+    border-radius: 10%;
     background-color: #F6F6F6;
     text-align: center;
-    width: 50%;
-    margin-left: -30%;
-    margin-right: 30%
+    width: 80%;
+    margin-left: -87%;
+    margin-right: 100%;
 }
 h1{
     padding-left: 20px;
@@ -149,11 +158,6 @@ ion-list ion-list-header {
     border: none;
     margin-bottom: 2px;
     padding-bottom: 0px;
-}
-item-md ion-thumbnail img {
-    height: 60px;
-    margin-left: 10px;
-    width: 60px;
 }
 .list-header-ios {
     margin-bottom: 0px;

@@ -33,29 +33,33 @@ export class LoginPage {
 			name: new FormControl('', Validators.required),
 			password: new FormControl('', Validators.required)
     });
+    this.checkUserLogin();
+    this.storage.set('isLoggedIn', null);
   }
 
   ionviewDidLoad() {
   }
   ionviewDidEnter() {
-    this.checkUserLogin();
+    
   }
   checkUserLogin() {
     this.storage.get('isLoggedIn').then((loggedIn) => {
+      console.log('telah login', loggedIn);
       if (loggedIn === true) {
         this.navCtrl.setRoot('HomePage');
       }
     });
   }
   // Attempt to login in through our User service
-  doLogins() {
+  doLogin() {
+    this.globalService.presentRouteLoader();
     if (this.loginForm.value !== null) {
     this.auth.authenticate(this.loginForm.value).subscribe((resp) => {
-      this.storage.set('isLoggedIn', true);
       this.storage.set('token', resp.access_token);
       let accesstoken = resp.access_token;
       let id = resp.id;
       this.pengawas(accesstoken, id);
+      this.getTahapan(accesstoken);
     }, (err) => {
       let error = err.json();
       this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
@@ -73,12 +77,34 @@ export class LoginPage {
 pengawas(accesstoken, id) {
   this.auth.pengawas(accesstoken, id).subscribe((resp) => {
     this.storage.set('kodepengawas', resp.pengawas.kode_pengawas);
-    this.navCtrl.setRoot('HomePage');
+    this.getlokasi(accesstoken, resp.pengawas.kode_pengawas);
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
     console.log(err);
     });
+  }
+
+  getlokasi(accesstoken, kodepengawas) {
+    this.auth.lokasi(accesstoken, kodepengawas).subscribe((resp) => {
+      this.storage.set('lokasi', resp);
+      this.navCtrl.setRoot('HomePage');
+  }, (err) => {
+    let error = err.json();
+    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+    console.log(err);
+    });
+
+  }
+
+  getTahapan(data) {
+    this.auth.tahapan(data).subscribe((resp) => {
+      this.storage.set('tahapan', resp);
+  }, (err) => {
+    let error = err.json();
+    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+    console.log(err);
+  });
   }
 
 }

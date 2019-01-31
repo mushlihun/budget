@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Config, { ApiHelper } from '../../config/global';
 import { Headers, Http, RequestOptions } from '@angular/http';
 import { GlobalServiceProvider } from '../../providers/global-service/global-service';
+import { Storage } from '@ionic/storage';
 /*
   Generated class for the AuthProvider provider.
 
@@ -10,12 +11,19 @@ import { GlobalServiceProvider } from '../../providers/global-service/global-ser
 */
 @Injectable()
 export class AuthProvider {
-
+  isLoggedIn = 'isLoggedIn';
   constructor(public http: Http,
               private api: ApiHelper,
+              public storage: Storage,
               private connectivityService: GlobalServiceProvider,) {
     console.log('Hello AuthProvider Provider');
   }
+
+  loggedIn(): Promise<boolean> {
+    return this.storage.get(this.isLoggedIn).then((value) => {
+      return value === true;
+    });
+  };
 
   authenticate(data) {
     if (this.connectivityService.isOnline()){
@@ -23,10 +31,12 @@ export class AuthProvider {
       let options = new RequestOptions({headers: headers});
       let body = this.formData(data);
       return this.http.post(this.api.getApiUrl(Config.apis.login), body, options).map(res => res.json());
+      
     } else {
       this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
     }
   }
+  
   register(data) {
     if (this.connectivityService.isOnline()){
       let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
@@ -132,6 +142,17 @@ export class AuthProvider {
       } else {
         this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
       }
+  }
+
+  sumbit(data) {
+    if (this.connectivityService.isOnline()){
+      let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+      let options = new RequestOptions({headers: headers});
+      let body = this.formData(data);
+      return this.http.post(this.api.getApiUrl(Config.apis.submit), body, options).map(res => res.json());
+    } else {
+      this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
+    }
   }
 
   formData(data){
