@@ -10,15 +10,15 @@ import { IonicPage, NavController } from 'ionic-angular';
 export class ConfirmationPage {
   
   constructor(public navCtrl: NavController) {
-    // setTimeout(() => {
-    //   // this.navCtrl.popToRoot();
-    //   this.navCtrl.push('HomePage');
-    // // }, 2000)
+    setTimeout(() => {
+      // this.navCtrl.popToRoot();
+      this.navCtrl.setRoot('HomePage');
+    }, 2000);
     // });
   }
   
   _goHome = () => {
-    // this.navCtrl.popToRoot();
-    this.navCtrl.push('HomePage');
+    this.navCtrl.popToRoot();
+    // this.navCtrl.push('HomePage');
   }
 }

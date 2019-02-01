@@ -31,6 +31,7 @@ export class BlokhomePage {
   SwipedTabsIndicator :any= null;
   tabElementWidth_px :number= 50;
   tabs:any=[];
+  cart: any[] = [];
   MenuPage = 'MenuPage';
   pages = [
     { pageName: 'MenuPage', title: 'A1', icon: 'flame', id: 'timelineTab'},
@@ -120,6 +121,17 @@ export class BlokhomePage {
     }
   
   _closeModal = () => {
-    this.navCtrl.setRoot('HomePage');
+    // this.navCtrl.setRoot('PaymentPage');
+    this.storage.get('cart').then((data) => {
+      this.cart = data;
+    });
+    this.storage.get('datatotal').then((data) => {
+      let datatotal = data;
+   
+    this.navCtrl.push('PaymentPage', {
+        produk: this.cart,
+        datatotal
+      });
+    });
   }
 }

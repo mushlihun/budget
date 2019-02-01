@@ -100,7 +100,7 @@ getBahan() {
   // this.bahan[productId].quantity
   // ? this.bahan[productId].quantity + 1
   // : 1;
-  if (this.bahan[productId].kodebahan === this.bahan[catId].kodebahan) {
+  if (this.bahan[productId].kodebahan === this.bahan[productId].kodebahan) {
     this.bahan[productId].quantity = 
   this.bahan[productId].quantity
   ? this.bahan[productId].quantity + 1
@@ -110,7 +110,7 @@ getBahan() {
     this.cart.push(this.bahan[productId]);
   }
   // this.jumlah = this.bahan[productId].quantity;
-  console.log('this.jumlah: ',  this.bahan[productId]);
+  console.log('this.jumlah: ', this.bahan[productId]);
   // this.cart.push(this.bahan[productId]);
   this._totalPrice();
 }
@@ -133,6 +133,7 @@ addToCart = (productId) => {
   console.log('produk: ', produk);
   this._addToOrders();
 }
+
 _aggregateCart = (cart) => {
   let newCart = [];
   cart.forEach(function(item) {
@@ -140,13 +141,11 @@ _aggregateCart = (cart) => {
        newCart.push(item);
     }
   });
-  console.log('newCart', newCart);
-  this.produkall = newCart;
   return newCart;
 }
 _addToOrders = () => {
   this.storage.get('blokno').then((data) => {
-    let blokno = data;
+  let blokno = data;
   let bloks = {
     // produk: this.cart,
     blokhome: this.bloks,
@@ -194,13 +193,15 @@ _deleteFromCart = (productId) => {
   this.storage.get('blokno').then((data) => {
     let blokno = data;
     let datatotal = {
-      // produk: this.cart,
+      produk: this.cart,
       blokhome: this.bloks,
       blokno: blokno
     }
+    this.storage.set('datatotal', datatotal);
     console.log('datatotal: ', datatotal);
     if(this.cart.length > 0) {
       this._aggregateCart(this.cart);
+      this.storage.set('cart', this.cart);
       // this.navCtrl.push('PaymentPage', {
       //   produk: this.cart,
       //   datatotal
@@ -236,7 +237,7 @@ _productModal = (catId, productId) => {
   */
   _totalPrice = () => {
     this.total = this.cart.length > 0 ? this.cart
-    .map(item => item.kode_bahan)
+    .map(item => item.quantity)
     .reduce((a, b) => {
       return a+b;
     }) : '0';

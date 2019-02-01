@@ -55,7 +55,6 @@ export class HomePage {
     if(data.lokasi && data.lokasi.length > 0) {
       this.isLastPage = true;          
       this.lokasi = data.lokasi;
-      console.log('this.lokasi:', this.lokasi);
     } else {
       this.isLastPage = false;
     }
