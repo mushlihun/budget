@@ -95,24 +95,32 @@ getBahan() {
   * @param {number} catId
   * @param {number} productId
   */
- _addToCart = (catId,productId) => {
+ _addToCart = (catId, productId) => {
   // this.bahan[productId].quantity = 
   // this.bahan[productId].quantity
   // ? this.bahan[productId].quantity + 1
   // : 1;
+  // for(this.tahapan[catId] === this.tahapan[catId])
   if (this.bahan[productId].kodebahan === this.bahan[productId].kodebahan) {
     this.bahan[productId].quantity = 
   this.bahan[productId].quantity
   ? this.bahan[productId].quantity + 1
   : 1;
-    this.jumlah = this.bahan[productId].quantity;
-    console.log('addToCart: ',  this.jumlah);
+    this.jumlah = this.bahan[productId];
     this.cart.push(this.bahan[productId]);
   }
   // this.jumlah = this.bahan[productId].quantity;
-  console.log('this.jumlah: ', this.bahan[productId]);
+  console.log('quantity: ', this.bahan[productId]);
   // this.cart.push(this.bahan[productId]);
   this._totalPrice();
+  //dariindra
+  // for (i=0; i<produk.length; i++){
+// if (produk[i][kode_bahan] === this.bahan[productId].kodebahan) {
+  // produk[i].quantity = 
+  // produk[i].quantity.quantity + this.bahan[productId].quantity + 1
+// }
+  // }
+
 }
 
 addToCart = (productId) => {
@@ -135,12 +143,14 @@ addToCart = (productId) => {
 }
 
 _aggregateCart = (cart) => {
+  console.log('cart', cart);
   let newCart = [];
   cart.forEach(function(item) {
    if(newCart.indexOf(item) < 0) {
        newCart.push(item);
     }
   });
+  console.log('newCart: ', newCart);
   return newCart;
 }
 _addToOrders = () => {
@@ -191,22 +201,31 @@ _deleteFromCart = (productId) => {
 // redirige vers la page de paiments si le panier contient au moins un produit.
   _onOrder = () => {
   this.storage.get('blokno').then((data) => {
-    let blokno = data;
     let datatotal = {
       produk: this.cart,
       blokhome: this.bloks,
-      blokno: blokno
+      blokno: data
     }
     this.storage.set('datatotal', datatotal);
-    console.log('datatotal: ', datatotal);
     if(this.cart.length > 0) {
-      this._aggregateCart(this.cart);
-      this.storage.set('cart', this.cart);
+      this._aggregateCart(datatotal.produk);
+      console.log('this.cart', this.cart);
+      console.log('datatotal', datatotal);
+      // this.storage.set('cart', this.cart);
       // this.navCtrl.push('PaymentPage', {
       //   produk: this.cart,
       //   datatotal
       // });
     }
+    //dari indra
+  //   for (let i =0; i < datatotal.produk.length; i++) {
+  //     if(datatotal.produk[i].kode_bahan === this.cart[i].kode_bahan) {
+  //       datatotal.produk[i].quantity = datatotal.produk[i].quantity 
+  //       + 1
+  //     }
+  //   }
+  //   console.log('datatotalp', datatotal.produk);
+  //   console.log('datatotals', this.cart);
   });
   }
 
