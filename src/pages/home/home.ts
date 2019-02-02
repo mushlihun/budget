@@ -70,7 +70,8 @@ export class HomePage {
   }
 
   logOut() {
-    this.storage.set('isLoggedIn', null);  
+    this.storage.set('isLoggedIn', null);
+    this.storage.set('cart', null);  
     this.navCtrl.setRoot('LoginPage');
   }
 

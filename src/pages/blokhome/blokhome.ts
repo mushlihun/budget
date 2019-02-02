@@ -130,7 +130,7 @@ export class BlokhomePage {
    
     this.navCtrl.push('PaymentPage', {
         produk: this.cart,
-        datatotal
+        datatotal: datatotal
       });
     });
   }

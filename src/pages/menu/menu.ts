@@ -124,13 +124,15 @@ getBahan() {
 }
 
 addToCart = (productId) => {
-  if (this.bahan[productId].kodebahan === this.bahan[productId].kodebahan) {
-    this.jumlah = this.bahan[productId].quantity;
-    console.log('addToCart: ',  this.jumlah);
+  for (let i = 0; this.bahan[productId] < 0; i++){
+    if (this.bahan[productId].kode_bahan === this.bahan[productId].kode_bahan) {
+      this.jumlah = this.bahan[productId].quantity;
+      console.log('addToCart: ',  this.jumlah);
+    }
   }
+  
   // this.jumlah = this.bahan[productId].quantity;
   this.cart.push(this.bahan[productId]);
-  console.log('this.cart.push: ', this.cart.push());
   this._totalPrice();
   let produk = {
     kode : this.bahan[productId].kode_bahan,
@@ -138,7 +140,7 @@ addToCart = (productId) => {
     qty : this.bahan[productId].quantity,
     satuan : this.bahan[productId].satuan
   }
-  console.log('produk: ', produk);
+  console.log('produk: ', produk.qty);
   this._addToOrders();
 }
 
@@ -151,6 +153,7 @@ _aggregateCart = (cart) => {
     }
   });
   console.log('newCart: ', newCart);
+  this.storage.set('cart', newCart);
   return newCart;
 }
 _addToOrders = () => {
@@ -164,7 +167,7 @@ _addToOrders = () => {
   const lastOrder = {
     date: new Date(),
     datatotal: bloks,
-    produkall: this.produkall,
+    produkall: this.cart,
   }
   this._onOrder();
   this.ordersService.newOrder(lastOrder);
@@ -200,18 +203,27 @@ _deleteFromCart = (productId) => {
 
 // redirige vers la page de paiments si le panier contient au moins un produit.
   _onOrder = () => {
+    
   this.storage.get('blokno').then((data) => {
     let datatotal = {
-      produk: this.cart,
-      blokhome: this.bloks,
-      blokno: data
+      blokhome: this.bloks = {
+        blokno: data = {
+          produk: this.cart,
+        }
+      }
+      
     }
-    this.storage.set('datatotal', datatotal);
+    this.storage.set('datatotal', datatotal.blokhome.blokno.produk);
     if(this.cart.length > 0) {
-      this._aggregateCart(datatotal.produk);
+      for (let i = 0; i < this.cart.length; i++) {
+        if (this.cart[i].kode_bahan === this.bahan[i].kode_bahan){
+          console.log('looping', this.cart[i].kode_bahan);
+    this._aggregateCart(this.cart);
+        }
+      }
       console.log('this.cart', this.cart);
       console.log('datatotal', datatotal);
-      // this.storage.set('cart', this.cart);
+      // this.storage.set('cart', datatotal.produk);
       // this.navCtrl.push('PaymentPage', {
       //   produk: this.cart,
       //   datatotal
@@ -236,17 +248,17 @@ _deleteFromCart = (productId) => {
   * @param {number} catId
   * @param {number} productId
   */
-_productModal = (catId, productId) => {
-  console.log('catId: ', catId);
+_productModal = (indexhome, productId) => {
+  console.log('indexhome: ', indexhome);
   console.log('productId: ', productId);
   const modalOptions: ModalOptions = { enableBackdropDismiss: true, showBackdrop: true};
   const productModal: Modal = this.modalCtrl.create(ProductModalPage, { 
-    product: this.tahapan[catId].bahan[productId] 
+    product: this.blokno[indexhome].bahan[productId] 
   }, modalOptions);
    productModal.present();
    productModal.onWillDismiss((param) => {  
      if(param.addToCart) {
-      this._addToCart(catId,productId);
+      this._addToCart(indexhome,productId);
      }
    });
 }
