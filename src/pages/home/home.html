@@ -8,26 +8,24 @@
 </ion-header>
 
 <ion-content class="body">
-  <div class="splash-bg"></div>
     <div class="splash-info">
-      <div class="splash-logo"></div>
+      <!-- <div class="splash-logo"></div> -->
   <!-- <div class="container"> -->
-    <div class="header">
+    <!-- <div class="header">
       <h2>Selamat Datang</h2>
       <h3>PT. Gerbang Duabelas</h3>
-    </div>
+    </div> -->
       <!-- <button (click)="_onChoose('classic')" ion-button round class="button">Sarana Bahagia</button>
       <button (click)="_onChoose('italian')" ion-button round class="button">Hokiland Residence</button> -->
-     <div>
-        <ion-list>
-            <button ion-item *ngFor="let item of lokasi; let lokasiId of lokasi[lokasi.kode_lokasi]" (click)="goBlok(lokasiId)">
-              {{item.nama_lokasi}}
-              <div class="item-note" item-end>
-                {{item.kode_lokasi}}
-              </div>
-            </button>
-          </ion-list>
-     </div> 
+      <ion-grid>
+          <ion-row>
+              <ion-col class="lokasi" col-6 *ngFor="let item of lokasi; let lokasiId of lokasi[lokasi.kode_lokasi]" (click)="goBlok(lokasiId)">
+                  <img class="logos" src="assets/imgs/home-location-marker.png" alt="">
+                  <h3>{{item.kode_lokasi}}</h3>
+                  <p>{{item.nama_lokasi}}</p>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
     <!-- </div> -->
   </div>
   <!-- <button (click)="_onChoose('classic')" ion-button round class="button">Sarana Bahagia</button>

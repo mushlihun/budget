@@ -3,6 +3,25 @@ page-home {
         // background-color: #72b7e5;
         background-image: "../assets/imgs/logo.png";
     }
+    .body ion-row {
+      height: 100%;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+    
+    .body ion-col {
+      flex: 0 0 50%;
+      max-width: 50%;
+      text-align: center;
+      padding: 10px 5px;
+    }
+    
+    .cell-1 {
+      background-color: #C5DCFC;
+    }
+    .cell-2 {
+      background-color: #262B69;
+    }
     
     .container {
         margin-top: 20%;
@@ -47,7 +66,6 @@ page-home {
       .splash-info {
         position: relative;
         z-index: 2;
-        margin-top: -60%;
         text-align: center;
       }
       .splash-logo {
@@ -62,5 +80,14 @@ page-home {
         font-weight: bold;
         max-width: 80%;
         margin: auto;
+      }
+
+      .lokasi {
+        background: $app-background;
+        border: 1px solid blue;
+      }
+
+      .logos {
+        max-width: 30%;
       }
 }
