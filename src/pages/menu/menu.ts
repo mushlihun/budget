@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions, ViewController, Item } from 'ionic-angular';
-//Pages
+// Pages
 import  { ProductModalPage } from '../product-modal/product-modal'; 
 import 'rxjs/add/operator/map';
-//Service
+// Service
 // import { MenuService } from '../../services/menu.service';
-import { AuthProvider } from '../../providers/auth/auth';
-import { GlobalServiceProvider } from '../../providers/global-service/global-service';
-//Models
+// import { AuthProvider } from '../../providers/auth/auth';
+// import { GlobalServiceProvider } from '../../providers/global-service/global-service';
+// Models
 import { Categories } from '../../models/menu.model';
 import { Storage } from '@ionic/storage';
 import { OrdersService } from '../../services/orders.service';
@@ -62,7 +62,6 @@ export class MenuPage {
   // });
   this.storage.get('tahapan').then((data) => {
   this.tahapan = data.tahapan.sort().reverse();
-  console.log(this.tahapan);
   });
   
  }
@@ -95,17 +94,21 @@ export class MenuPage {
   // this.cart.push(this.bahan[productId]);
 
   //baru
-  if (this.tahapan[catId] === this.tahapan[catId]){
+  for (let i=0; i<this.tahapan.length; i++){
+  if (this.tahapan[catId].kode_tahapan === this.tahapan[i].kode_tahapan){
   if (this.bmt[productId].kode_bahan === this.bmt[productId].kode_bahan) {
     this.bmt[productId].quantity = 
   this.bmt[productId].quantity
   ? this.bmt[productId].quantity + 1
   : 1;
-    this.jumlah = this.bmt[productId];
-    this.cart.push(this.bmt[productId]);
+    
   }
 }
+ }
+  this.jumlah = this.bmt[productId];
+  this.cart.push(this.bmt[productId]);
   this._totalPrice();
+  console.log('this.tahapan: ',  this.tahapan[catId].kode_tahapan);
   // this._onOrder();
   //dariindra
   // for (i=0; i<produk.length; i++){
@@ -114,16 +117,23 @@ export class MenuPage {
   // produk[i].quantity.quantity + this.bahan[productId].quantity + 1
 // }
   // }
-
+  let produk = {
+    kode : this.bmt[productId].kode_bahan,
+    bahan : this.bmt[productId].nama_bahan,
+    qty : this.bmt[productId].quantity,
+    satuan : this.bmt[productId].satuan
+  }
+  console.log('produk,_addToCart: ', produk);
 }
-addToCart = (productId) => {
+addToCart = (catId, productId) => {
   for (let i = 0; this.bmt[productId] < 0; i++){
+    if (this.tahapan[catId].kode_tahapan === this.tahapan[i].kode_tahapan){
     if (this.bmt[productId].kode_bahan === this.bmt[productId].kode_bahan) {
       this.jumlah = this.bmt[productId].quantity;
       console.log('addToCart: ',  this.jumlah);
     }
   }
-  
+}
   // this.jumlah = this.bahan[productId].quantity;
   this.cart.push(this.bmt[productId]);
   this._totalPrice();
@@ -133,7 +143,7 @@ addToCart = (productId) => {
     qty : this.bmt[productId].quantity,
     satuan : this.bmt[productId].satuan
   }
-  console.log('produk: ', produk);
+  console.log('produk,addToCart: ', produk);
   // this._onOrder();
 }
 
@@ -240,13 +250,13 @@ _deleteFromCart = (catId,productId) => {
     // this._aggregateCart(this.cart);
         }
       }
-      console.log('datatotal', datatotal);
       // this.storage.set('cart', datatotal.produk);
       // this.navCtrl.push('PaymentPage', {
       //   produk: this.cart,
       //   datatotal
       // });
     }
+    console.log('datatotal', datatotal);
     //dari indra
   //   for (let i =0; i < datatotal.produk.length; i++) {
   //     if(datatotal.produk[i].kode_bahan === this.cart[i].kode_bahan) {
@@ -300,7 +310,6 @@ _productModal = (indexhome, productId) => {
     * @param {number} i
     */
   _toggleCategory(i, indextahap) {
-    console.log('indextahapan: ', indextahap);
     this.tahapan[i].open = !this.tahapan[i].open;
     this.tahapan.forEach(item => {
       if(item !== this.tahapan[i]) {

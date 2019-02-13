@@ -56,7 +56,7 @@ export class BlokhomePage {
   }
 
   ionViewDidLoad() {
-    this.getkontrakheader();
+    // this.getkontrakheader();
     this.kontrakdetail();
     // this.getBlokhome(this.bloks);
   }
@@ -76,7 +76,6 @@ export class BlokhomePage {
 }
   click(indexhome) {
     this.storage.set('blokno', indexhome.blok_no);
-    console.log('tipe', indexhome.tipe);
     this.storage.get('budgets').then((data) => {
       let bmt = data.budget.filter(item => item.tipe === indexhome.tipe);
       this.storage.set('tipes', bmt);
@@ -96,7 +95,6 @@ export class BlokhomePage {
       this.no_kontrak = data;
     });
     this.storage.get('kontrakdetail').then((data) => {
-      console.log('kontrakdetail', data);
       if(data && data.length > 0) {
         console.log('this.no_kontrak', this.no_kontrak);
         console.log('this.bloks', this.bloks);
