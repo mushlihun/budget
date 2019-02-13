@@ -8,28 +8,30 @@
 
 <ion-content class="body">
 <ion-list class="categoriesList">
-  <ion-list-header *ngFor="let t of tahapan; let catId = index" no-lines no-padding no-margin>
-      <button no-lines (click)="_toggleCategory(catId)">
+  <ion-list-header *ngFor="let t of tahapan; let catId = index; let indextahap of tahapan[tahapan.kode_tahapan]" no-lines no-padding no-margin>
+      <!-- <ion-list-header *ngFor="let t of tahapan; let catId of tahapan[tahapan.kode_tahapan]" no-lines no-padding no-margin> -->
+      <button no-lines (click)="_toggleCategory(catId, indextahap)">
         <div class="catContainer">
           <img width="25" height="25" src="{{'assets/imgs/fanta.ico'}}">
           <h2>{{t.nama_tahapan}}</h2>
         </div>
       </button>
-    <ion-list  *ngIf="bahan && t.open">
-      <ion-item *ngFor="let product of bahan; let productId = index">
+    <ion-list *ngIf="bmt && t.open">
+      <ion-item *ngFor="let product of bmt; let productId = index">
         <ion-thumbnail item-start (click)="_productModal(catId, productId)">
           <img src="{{'assets/imgs/coca.ico'}}">
         </ion-thumbnail>
         <h3 class="name" (click)="_productModal(catId, productId)">{{product.name}}</h3>
         <ion-item class="namaproduk" text-wrap>
           <p>{{product.nama_bahan}}</p>
+          <p>Min order: {{product.qty}} {{product.satuan}}</p>
         </ion-item>
         <div clear item-end class="add">
-            <input [(ngModel)]="product.quantity" (change)="addToCart(productId)"  placeholder="0" class="inputqty" text-center classtype="number">
+            <input [(ngModel)]="product.quantity" (change)="addToCart(catId, productId)"  placeholder="0" class="inputqty" text-center classtype="number">
           <button class="counterButton" (click)="_addToCart(catId,productId)">+</button>
             <!-- <label>Qty</label> -->
             <span type="number" class="counter"></span>
-          <button class="counterButton" (click)="_deleteFromCart(productId)">-</button>
+          <button class="counterButton" (click)="_deleteFromCart(catId,productId)">-</button>
         </div>
       </ion-item>
     </ion-list>

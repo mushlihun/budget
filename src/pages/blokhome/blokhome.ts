@@ -27,6 +27,7 @@ export class BlokhomePage {
   bloks: any;
   kontrakheader: any;
   kodelokasi: any;
+  no_kontrak: any;
   isLastPage: boolean = false;
   SwipedTabsIndicator :any= null;
   tabElementWidth_px :number= 50;
@@ -50,62 +51,67 @@ export class BlokhomePage {
     public events: Events,
     public view: ViewController) {
     this.bloks = this.navParams.get('bloks').kode_lokasi;
+    this.no_kontrak = this.navParams.get('bloks').no_kontrak;
     // this.getBlokhome(this.bloks);
   }
 
   ionViewDidLoad() {
+    this.getkontrakheader();
     this.kontrakdetail();
-    this.getBlokhome(this.bloks);
+    // this.getBlokhome(this.bloks);
   }
 
   ionViewDidEnter() {
     this.SwipedTabsIndicator = document.getElementById("indicator");
-    this.nokontrak(this.bloks);
   }
 
   onTabSelect(ev: any) {
     // this.selectedTabIndex = ev.index;
     
       this.selectedTabIndex = ev.index;
+      // this.storage.set('blokno', indexhome.blok_no);
+    console.log('ev.index', ev.index);
       // this.superTabs.clearBadge(this.blokshome[ev.index].title);
       // console.log('supertabs', this.blokshome[ev.index].title);
 }
   click(indexhome) {
     this.storage.set('blokno', indexhome.blok_no);
+    console.log('tipe', indexhome.tipe);
+    this.storage.get('budgets').then((data) => {
+      let bmt = data.budget.filter(item => item.tipe === indexhome.tipe);
+      this.storage.set('tipes', bmt);
+    });
   }
 
-  nokontrak(kodelokasi) {
-    this.globalService.presentRouteLoader();
-    this.storage.get('token').then((data) => {                  
-      this.accesstoken = data;
-        this.auth.kh(this.accesstoken, kodelokasi).subscribe((resp) => {
-        this.kontrakheader = resp.kontrak;
-        this.storage.set('nokontrak', resp.kontrak.no_kontrak);
-      }, (err) => {
-        let error = err.json();
-        this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-        console.log(err);
-        });
+  getkontrakheader() {
+    this.storage.get('kontrakheader').then((data) => {
+      console.log('kontrakheader', data);
+      let bmt = data.filter(item => item.kode_lokasi === this.bloks);
+      console.log('kontrakheader', bmt);
+    });
+  }
+  kontrakdetail() {
+    this.storage.get('nokontrak').then((data) => {
+      console.log('nokontrak', data);
+      this.no_kontrak = data;
+    });
+    this.storage.get('kontrakdetail').then((data) => {
+      console.log('kontrakdetail', data);
+      if(data && data.length > 0) {
+        console.log('this.no_kontrak', this.no_kontrak);
+        console.log('this.bloks', this.bloks);
+        console.log('this.bloks', this.navParams.get('bloks'));
+      this.blokshome = data.filter(item => item.no_kontrak === this.no_kontrak);
+      this.isLastPage = true;
+      } else {
+        this.isLastPage = false;
+      }
+    }, (err) => {
+      let error = err.json();
+      this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+      console.log(err);
       });
   }
-    kontrakdetail() {
-    this.storage.get('token').then((data) => {                  
-      this.accesstoken = data;
-        this.auth.kd(this.accesstoken).subscribe((resp) => {
-          if(resp.kontrak && resp.kontrak.length > 0) {
-          this.blokshome = resp.kontrak;
-          console.log('this.blokshome', this.blokshome);
-          this.isLastPage = true;
-        } else {
-          this.isLastPage = false;
-        }
-      }, (err) => {
-        let error = err.json();
-        this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-        console.log(err);
-        });
-      });
-    }
 
   getBlokhome(kodelokasi) {
     this.storage.get('token').then((data) => {                  

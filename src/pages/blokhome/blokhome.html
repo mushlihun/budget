@@ -35,4 +35,12 @@
       <super-tabs *ngIf="isLastPage" scrollTabs="true" toolbarBackground="primary" toolbarColor="light" indicatorColor="light" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
           <super-tab *ngFor="let page of blokshome; let indexhome of blokshome[kontrak.blok_no]" [root]="MenuPage" [title]="page.blok_no" (click)="click(indexhome)"></super-tab>
       </super-tabs>  
+      <!-- <ion-list>
+        <ion-item *ngFor="let item of blokshome; let indexhome of blokshome[kontrak.blok_no]" (click)="itemClicked($event, indexhome)">
+          <h2>{{ item.tipe | uppercase }}</h2>
+          <h3>{{ item.blok_no | uppercase }}</h3>
+          <p>{{ item.no_kontrak }}</p>
+          <button ion-button item-right color="danger" (click)="click(indexhome)">Button</button>
+        </ion-item>
+      </ion-list> -->
     </ion-content>

@@ -59,7 +59,6 @@ export class GlobalServiceProvider {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
     });
 
     toast.present();

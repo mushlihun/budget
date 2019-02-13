@@ -20,7 +20,6 @@ export class LoginPage {
   loginForm: FormGroup;
   isLoggedIn: Boolean =  false;
   // Our translated text strings
-  private loginErrorString: string;
 
   constructor(
     private globalService: GlobalServiceProvider,
@@ -30,17 +29,16 @@ export class LoginPage {
     public storage: Storage) {
 
     this.loginForm = new FormGroup({
-			name: new FormControl('', Validators.required),
+			username: new FormControl('', Validators.required),
 			password: new FormControl('', Validators.required)
     });
     this.checkUserLogin();
-    this.storage.set('isLoggedIn', null);
+    // this.storage.set('isLoggedIn', null);
   }
 
   ionviewDidLoad() {
   }
   ionviewDidEnter() {
-    
   }
   checkUserLogin() {
     this.storage.get('isLoggedIn').then((loggedIn) => {
@@ -58,19 +56,20 @@ export class LoginPage {
       this.storage.set('token', resp.access_token);
       let accesstoken = resp.access_token;
       let id = resp.id;
-      this.pengawas(accesstoken, id);
       this.getTahapan(accesstoken);
+      this.pengawas(accesstoken, id);
     }, (err) => {
       let error = err.json();
       this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-      console.log(err);
-      let toast = this.toastCtrl.create({
-        message: this.loginErrorString,
-        duration: 3000,
-        position: 'bottom'
-      });
-      toast.present();
+      console.log(error);
     });
+  } else if (this.loginForm.value === null || this.loginForm.value == ""  ) {
+    let toast = this.toastCtrl.create({
+      message: "isi dulu fieldnya",
+      duration: 3000,
+      position: 'bottom'
+    });
+    toast.present();
   }
 }
 
@@ -100,6 +99,9 @@ pengawas(accesstoken, id) {
   getTahapan(data) {
     this.auth.tahapan(data).subscribe((resp) => {
       this.storage.set('tahapan', resp);
+      this.getbudgetmaterial(data);
+      this.getBahan(data);
+      this.getNokontrak(data);
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
@@ -107,4 +109,45 @@ pengawas(accesstoken, id) {
   });
   }
 
+  getbudgetmaterial(data) {
+    this.auth.bmt(data).subscribe((resp) => {
+      this.storage.set('budgets', resp);
+  }, (err) => {
+    let error = err.json();
+    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+    console.log(err);
+  });
+  }
+
+  getBahan(data) {
+      this.auth.bahan(data).subscribe((resp) => {
+        this.storage.set('bahan', resp.bahan);
+    }, (err) => {
+      let error = err.json();
+      this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+      console.log(err);
+    });
+  }
+
+  getNokontrak(data) {
+    this.auth.getkh(data).subscribe((resp) => {
+      this.storage.set('kontrakheader', resp.kontrak);
+      this.storage.set('nokontrak', resp.kontrak[0].no_kontrak);
+      this.getkontrakdetail(data);
+    }, (err) => {
+      let error = err.json();
+      this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+      console.log(err);
+      });
+  }
+
+  getkontrakdetail(data) {
+    this.auth.kd(data).subscribe((resp) => {
+      this.storage.set('kontrakdetail', resp.kontrak);
+  }, (err) => {
+    let error = err.json();
+    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+    console.log(err);
+    });
+  }
 }

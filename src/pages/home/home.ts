@@ -12,8 +12,8 @@ import { GlobalServiceProvider } from '../../providers/global-service/global-ser
   templateUrl: 'home.html'
 })
 export class HomePage {
-
   accesstoken: any;
+  bahan: any;
   blokshome: any = [];
   isLastPage: boolean = false;
   kodepengawas: any;
@@ -43,7 +43,7 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
-    
+  
   }
 
   ionViewDidEnter() {
@@ -55,6 +55,7 @@ export class HomePage {
     if(data.lokasi && data.lokasi.length > 0) {
       this.isLastPage = true;          
       this.lokasi = data.lokasi;
+      console.log(this.lokasi);
     } else {
       this.isLastPage = false;
     }
@@ -70,8 +71,9 @@ export class HomePage {
   }
 
   logOut() {
-    this.storage.set('isLoggedIn', null);
-    this.storage.set('cart', null);  
+    // this.storage.set('isLoggedIn', null);
+    // this.storage.set('cart', null);
+    this.storage.clear();  
     this.navCtrl.setRoot('LoginPage');
   }
 

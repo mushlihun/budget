@@ -12,10 +12,10 @@
     <ion-list>
     <ion-item>
         <ion-label floating>Username</ion-label>
-        <ion-input type="text" placeholder="Username" formControlName="name" required></ion-input>
+        <ion-input type="text" placeholder="Username" formControlName="username" required></ion-input>
     </ion-item>
-    <p *ngIf="!loginForm.controls.name.valid  && loginForm.controls.name.dirty && loginForm.controls.name.value != ''">Invalid name!</p>
-    <p *ngIf="!loginForm.controls.name.valid  && loginForm.controls.name.dirty && loginForm.controls.name.value == ''">Field is required!</p>
+    <p *ngIf="!loginForm.controls.username.valid  && loginForm.controls.username.dirty && loginForm.controls.username.value != ''">Invalid name!</p>
+    <p *ngIf="!loginForm.controls.username.valid  && loginForm.controls.username.dirty && loginForm.controls.username.value == ''">Field is required!</p>
 
     <ion-item>
         <ion-label floating>Password</ion-label>

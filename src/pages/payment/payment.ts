@@ -90,7 +90,7 @@ export class PaymentPage {
    /**
     * Ajoute aux commandes de l'utilisateur la commande actuelle
     */
-  _addToOrders = () => {
+  _addToOrdersx = () => {
     const lastOrder = {
       date: new Date(),
       datatotal: this.datatotal,
@@ -98,6 +98,17 @@ export class PaymentPage {
     }
     this.ordersService.newOrder(lastOrder);
     console.log('lastorder', lastOrder);
+  }
+
+  _addToOrders = () => {
+    this.storage.get('blokno').then((data) => {
+    const lastOrder = {
+      date: new Date(),
+      datatotal: this.datatotal,
+    }
+    this.ordersService.newOrder(lastOrder);
+    console.log('lastorder', lastOrder);
+    });
   }
 
   // permet de revenir à la view précédente en gardant les éléments du panier

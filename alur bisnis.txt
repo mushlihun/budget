@@ -1,0 +1,12 @@
+1. login 
+-getbahan
+-getlokasi
+-getTahapan
+-getpengawas
+-getbudgetmaterial
+
+2. home
+-getlokasi(index)
+-goBlok(kodelokasi, blokrumah, tiperumah, nokontrak)
+
+UPDATE master_budgeting_material SET nama_bahan = (SELECT nama_bahan FROM master_bahan WHERE kode_bahan = '') WHERE kode_bahan = ''

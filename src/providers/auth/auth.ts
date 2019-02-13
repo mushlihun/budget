@@ -26,6 +26,7 @@ export class AuthProvider {
   };
 
   authenticate(data) {
+    console.log('data', data);
     if (this.connectivityService.isOnline()){
       let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
       let options = new RequestOptions({headers: headers});
@@ -72,6 +73,20 @@ export class AuthProvider {
         this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
       }
   }
+//budget material
+  bmt(token) {
+    if (this.connectivityService.isOnline()){
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Authorization', 'Bearer '+token);
+        // headers.append('Accept', 'application/json');
+        let options = new RequestOptions({headers: headers});
+        return this.http.get(this.api.getApiUrl(Config.apis.bmt), options).map(res => res.json());
+      } else {
+        this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
+      }
+  }
+
   budgets(token, blok) {
     if (this.connectivityService.isOnline()){
         let headers = new Headers();
@@ -80,6 +95,18 @@ export class AuthProvider {
         // headers.append('Accept', 'application/json');
         let options = new RequestOptions({headers: headers});
         return this.http.get(this.api.getApiUrl(Config.apis.budget  + '?blok_no=' + blok), options).map(res => res.json());
+      } else {
+        this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
+      }
+  }
+
+  getkh(token) {
+    if (this.connectivityService.isOnline()){
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Authorization', 'Bearer '+token);
+        let options = new RequestOptions({headers: headers});
+        return this.http.get(this.api.getApiUrl(Config.apis.getkh), options).map(res => res.json());
       } else {
         this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
       }

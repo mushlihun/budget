@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions, ViewController, Item } from 'ionic-angular';
 //Pages
 import  { ProductModalPage } from '../product-modal/product-modal'; 
 import 'rxjs/add/operator/map';
@@ -18,6 +18,7 @@ import { OrdersService } from '../../services/orders.service';
 })
 export class MenuPage {
   menu: Categories[];
+  bmt: any;
   bahan: any;
   cart: any[] = [];
   tahapan: any = [];
@@ -28,10 +29,9 @@ export class MenuPage {
   bloks: any;
   blokno: any;
   produkall: any;
+  produk: any = [];
 
   constructor(
-    private auth: AuthProvider,
-    private globalService: GlobalServiceProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
     // private menuService: MenuService,
@@ -48,44 +48,23 @@ export class MenuPage {
  }
 
  ionViewDidEnter(){
+  this.storage.get('nokontrak').then((data) => {
+    this.nokontrak = data;
+    console.log('nokontrak', data);
+  });
  }
  ionViewDidLoad(){
-  this.getTahapan();
-  this.getBahan();
   this.storage.get('blok').then((data) => {
     this.bloks = data;
   });
-  this.storage.get('nokontrak').then((data) => {
-    this.nokontrak = data;
+  // this.storage.get('bahan').then((data) => {
+  //   this.bahan = data;
+  // });
+  this.storage.get('tahapan').then((data) => {
+    this.tahapan = data.tahapan;
   });
  }
 
- getTahapan() {
-  // this.storage.get('token').then((data) => {
-  //   this.auth.tahapan(data).subscribe((resp) => {
-  //     this.tahapan = resp.tahapan;
-  // }, (err) => {
-  //   let error = err.json();
-  //   this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-  //   console.log(err);
-  // });
-// });
-this.storage.get('tahapan').then((data) => {
-  this.tahapan = data.tahapan;
-});
-}
-
-getBahan() {
-  this.storage.get('token').then((data) => {
-    this.auth.bahan(data).subscribe((resp) => {
-      this.bahan = resp.bahan;
-  }, (err) => {
-    let error = err.json();
-    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-    console.log(err);
-  });
-});
-}
 
 /**
   * Méthode qui prend les indexs des catégories et des produits 
@@ -101,17 +80,27 @@ getBahan() {
   // ? this.bahan[productId].quantity + 1
   // : 1;
   // for(this.tahapan[catId] === this.tahapan[catId])
-  if (this.bahan[productId].kodebahan === this.bahan[productId].kodebahan) {
-    this.bahan[productId].quantity = 
-  this.bahan[productId].quantity
-  ? this.bahan[productId].quantity + 1
-  : 1;
-    this.jumlah = this.bahan[productId];
-    this.cart.push(this.bahan[productId]);
-  }
-  // this.jumlah = this.bahan[productId].quantity;
-  console.log('quantity: ', this.bahan[productId]);
+  // if (this.bahan[productId].kodebahan === this.bahan[productId].kodebahan) {
+  //   this.bahan[productId].quantity = 
+  // this.bahan[productId].quantity
+  // ? this.bahan[productId].quantity + 1
+  // : 1;
+  //   this.jumlah = this.bahan[productId];
+  //   this.cart.push(this.bahan[productId]);
+  // }
+  // // this.jumlah = this.bahan[productId].quantity;
+  // console.log('quantity: ', this.bahan[productId]);
   // this.cart.push(this.bahan[productId]);
+
+  //baru
+  if (this.bmt[productId].kode_bahan === this.bmt[productId].kode_bahan) {
+    this.bmt[productId].quantity = 
+  this.bmt[productId].quantity
+  ? this.bmt[productId].quantity + 1
+  : 1;
+    this.jumlah = this.bmt[productId];
+    this.cart.push(this.bmt[productId]);
+  }
   this._totalPrice();
   //dariindra
   // for (i=0; i<produk.length; i++){
@@ -122,8 +111,28 @@ getBahan() {
   // }
 
 }
-
 addToCart = (productId) => {
+  for (let i = 0; this.bmt[productId] < 0; i++){
+    if (this.bmt[productId].kode_bahan === this.bmt[productId].kode_bahan) {
+      this.jumlah = this.bmt[productId].quantity;
+      console.log('addToCart: ',  this.jumlah);
+    }
+  }
+  
+  // this.jumlah = this.bahan[productId].quantity;
+  this.cart.push(this.bmt[productId]);
+  this._totalPrice();
+  let produk = {
+    kode : this.bmt[productId].kode_bahan,
+    bmt : this.bahan[productId].nama_bahan,
+    qty : this.bmt[productId].quantity,
+    satuan : this.bmt[productId].satuan
+  }
+  console.log('produk: ', produk);
+  this._onOrder();
+}
+
+addToCarts = (productId) => {
   for (let i = 0; this.bahan[productId] < 0; i++){
     if (this.bahan[productId].kode_bahan === this.bahan[productId].kode_bahan) {
       this.jumlah = this.bahan[productId].quantity;
@@ -140,8 +149,8 @@ addToCart = (productId) => {
     qty : this.bahan[productId].quantity,
     satuan : this.bahan[productId].satuan
   }
-  console.log('produk: ', produk.qty);
-  this._addToOrders();
+  console.log('produk: ', produk);
+  this._onOrder();
 }
 
 _aggregateCart = (cart) => {
@@ -154,22 +163,21 @@ _aggregateCart = (cart) => {
   });
   console.log('newCart: ', newCart);
   this.storage.set('cart', newCart);
+  this.produk = newCart;
   return newCart;
 }
 _addToOrders = () => {
   this.storage.get('blokno').then((data) => {
-  let blokno = data;
   let bloks = {
-    // produk: this.cart,
+    produk: this.produk,
     blokhome: this.bloks,
-    blokno: blokno
+    blokno: data
   }
   const lastOrder = {
     date: new Date(),
     datatotal: bloks,
-    produkall: this.cart,
+    produkall: this.produk,
   }
-  this._onOrder();
   this.ordersService.newOrder(lastOrder);
   console.log('lastorder', lastOrder);
   });
@@ -183,40 +191,47 @@ _addToOrders = () => {
   * @param {number} catId
   * @param {number} productId
   */
-_deleteFromCart = (productId) => {
-  this.bahan[productId].quantity = 
-  this.bahan[productId].quantity === 0 
+_deleteFromCart = (catId,productId) => {
+  // this.bahan[productId].quantity = 
+  // this.bahan[productId].quantity === 0 
+  // ? 0 
+  // :this.bahan[productId].quantity - 1;
+//baru
+  this.bmt[productId].quantity = 
+  this.bmt[productId].quantity === 0 
   ? 0 
-  :this.bahan[productId].quantity - 1;
+  :this.bmt[productId].quantity - 1;
 
   const itemToRemove = this.cart.findIndex(item => 
-    item.name === this.bahan[productId].nama_bahan);
+    // item.name === this.bahan[productId].nama_bahan);
+    //baru
+    item.name === this.bmt[productId].nama_bahan);
     if(this.cart[itemToRemove] && this.cart[itemToRemove].quantity >= 0) {
       this.cart.splice(itemToRemove, 1);
     }
-    this.jumlah = this.bahan[productId].quantity;
+    // this.jumlah = this.bahan[productId].quantity;
+    this.jumlah = this.bmt[productId].quantity;
     console.log('jumlah bahan setelah dikurang: ', this.jumlah);
-    this.total -= this.bahan[productId].quantity;
+    // this.total -= this.bahan[productId].quantity;
+    this.total -= this.bmt[productId].quantity;
     this._totalPrice();
   }
 
 
 // redirige vers la page de paiments si le panier contient au moins un produit.
   _onOrder = () => {
-    
+  // this._addToOrders();  
   this.storage.get('blokno').then((data) => {
     let datatotal = {
-      blokhome: this.bloks = {
-        blokno: data = {
-          produk: this.cart,
-        }
-      }
-      
+      blokhome: this.bloks,
+      blokno: data,
+      produk: this.cart      
     }
-    this.storage.set('datatotal', datatotal.blokhome.blokno.produk);
+    this.storage.set('datatotal', datatotal);
     if(this.cart.length > 0) {
       for (let i = 0; i < this.cart.length; i++) {
-        if (this.cart[i].kode_bahan === this.bahan[i].kode_bahan){
+        // if (this.cart[i].kode_bahan === this.bahan[i].kode_bahan){
+        if (this.cart[i].kode_bahan === this.bmt[i].kode_bahan){
           console.log('looping', this.cart[i].kode_bahan);
     this._aggregateCart(this.cart);
         }
@@ -281,12 +296,17 @@ _productModal = (indexhome, productId) => {
     * définie dans l'objet initial.
     * @param {number} i
     */
-  _toggleCategory = (i) => {
+  _toggleCategory(i, indextahap) {
+    console.log('indextahapan: ', indextahap);
     this.tahapan[i].open = !this.tahapan[i].open;
     this.tahapan.forEach(item => {
       if(item !== this.tahapan[i]) {
         item.open = false;
       }
+    });
+    this.storage.get('tipes').then((data) => {
+      this.bmt = data.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
+        console.log('bmt: ', this.bmt);
     });
   } 
 }
