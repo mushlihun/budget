@@ -124,7 +124,7 @@ addToCart = (productId) => {
   this._totalPrice();
   let produk = {
     kode : this.bmt[productId].kode_bahan,
-    bmt : this.bahan[productId].nama_bahan,
+    bmt : this.bmt[productId].nama_bahan,
     qty : this.bmt[productId].quantity,
     satuan : this.bmt[productId].satuan
   }

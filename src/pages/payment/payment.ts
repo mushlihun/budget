@@ -104,7 +104,7 @@ export class PaymentPage {
     this.storage.get('blokno').then((data) => {
     const lastOrder = {
       date: new Date(),
-      datatotal: this.datatotal,
+      datatotal: this.produkall,
     }
     this.ordersService.newOrder(lastOrder);
     console.log('lastorder', lastOrder);
