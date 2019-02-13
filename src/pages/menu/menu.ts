@@ -61,15 +61,17 @@ export class MenuPage {
   //   this.bahan = data;
   // });
   this.storage.get('tahapan').then((data) => {
-    this.tahapan = data.tahapan;
+  this.tahapan = data.tahapan.sort().reverse();
+  console.log(this.tahapan);
   });
+  
  }
 
 
 /**
   * Méthode qui prend les indexs des catégories et des produits 
   * qui rajoute l'objet désiré au panier. Elle incrémente le compteur de l'objet
-  * et lance la donction de calcul du prix final. Elle ajoute la propriété quantity
+  * et lance la donction de calcul du prix final. Elle ajoute la ariété quantity
   * qui n'est pas définie dans l'objet initial.
   * @param {number} catId
   * @param {number} productId
@@ -93,6 +95,7 @@ export class MenuPage {
   // this.cart.push(this.bahan[productId]);
 
   //baru
+  if (this.tahapan[catId] === this.tahapan[catId]){
   if (this.bmt[productId].kode_bahan === this.bmt[productId].kode_bahan) {
     this.bmt[productId].quantity = 
   this.bmt[productId].quantity
@@ -101,7 +104,9 @@ export class MenuPage {
     this.jumlah = this.bmt[productId];
     this.cart.push(this.bmt[productId]);
   }
+}
   this._totalPrice();
+  // this._onOrder();
   //dariindra
   // for (i=0; i<produk.length; i++){
 // if (produk[i][kode_bahan] === this.bahan[productId].kodebahan) {
@@ -124,12 +129,12 @@ addToCart = (productId) => {
   this._totalPrice();
   let produk = {
     kode : this.bmt[productId].kode_bahan,
-    bmt : this.bmt[productId].nama_bahan,
+    bahan : this.bmt[productId].nama_bahan,
     qty : this.bmt[productId].quantity,
     satuan : this.bmt[productId].satuan
   }
   console.log('produk: ', produk);
-  this._onOrder();
+  // this._onOrder();
 }
 
 addToCarts = (productId) => {
@@ -150,7 +155,7 @@ addToCarts = (productId) => {
     satuan : this.bahan[productId].satuan
   }
   console.log('produk: ', produk);
-  this._onOrder();
+  // this._onOrder();
 }
 
 _aggregateCart = (cart) => {
@@ -186,7 +191,7 @@ _addToOrders = () => {
 /**
   * Méthode qui prend les indexs des catégories et des produits 
   * qui supprime l'objet désiré du panier. Elle décrémente le compteur de l'objet
-  * et lance la fonction de calcul du prix final. Elle modifie la propriété quantity
+  * et lance la fonction de calcul du prix final. Elle modifie la ariété quantity
   * en conséquence
   * @param {number} catId
   * @param {number} productId
@@ -232,11 +237,9 @@ _deleteFromCart = (catId,productId) => {
       for (let i = 0; i < this.cart.length; i++) {
         // if (this.cart[i].kode_bahan === this.bahan[i].kode_bahan){
         if (this.cart[i].kode_bahan === this.bmt[i].kode_bahan){
-          console.log('looping', this.cart[i].kode_bahan);
-    this._aggregateCart(this.cart);
+    // this._aggregateCart(this.cart);
         }
       }
-      console.log('this.cart', this.cart);
       console.log('datatotal', datatotal);
       // this.storage.set('cart', datatotal.produk);
       // this.navCtrl.push('PaymentPage', {
@@ -292,7 +295,7 @@ _productModal = (indexhome, productId) => {
   /**
     * Prend l'index de la catégorie et ouvre ou la ferme le menu déroulant au click.
     * Ferme les autres menus déroulant si il y en a d'autre ouverts
-    * la propriété open est automatiquement rajouté à l'objet en cours. Elle n'est pas
+    * la ariété open est automatiquement rajouté à l'objet en cours. Elle n'est pas
     * définie dans l'objet initial.
     * @param {number} i
     */
