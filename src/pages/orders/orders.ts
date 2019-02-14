@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, Modal, ModalController, ModalOptions, NavController, NavParams } from 'ionic-angular';
 // Services
 import { OrdersService } from '../../services/orders.service';
 // Model
@@ -23,6 +23,7 @@ export class OrdersPage {
     public auth: AuthProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
+    private modalCtrl: ModalController,
     private storage: Storage,
     private ordersService: OrdersService,
     private socialSharing: SocialSharing
@@ -37,6 +38,7 @@ export class OrdersPage {
   console.log('orders:', this.orders);
   console.log('order:', JSON.stringify(this.orders));
   this.nokontrak = this.nokontrak;
+  this._totalPrice();
  }
 
  kirimwa() {
@@ -57,12 +59,36 @@ export class OrdersPage {
   });
  }
 
-//  _totalPrice = () => {
-//   this.total = this.orders.length > 0 ? this.orders
-//   .map(item => item.price)
-//   .reduce((a, b) => {
-//     return a+b;
-//   }) : '0';
-// }
+ _totalPrice = () => {
+  let props = ['no_urut', 'kode_tahapan', 'kode_bahan', 'nama_bahan',];
+  let result = this.orders.filter(function(o1){
+    // filter out (!) items in this.orders
+    return !this.orders.some(function(o2){
+        return o1.datatotal === o2.datatotal;          // assumes unique id
+    });
+}).map(function(o){
+    // use reduce to make objects with only the required properties
+    // and map to apply this to the filtered array as a whole
+    return props.reduce(function(newo, name){
+        newo[name] = o[name];
+        return newo;
+    }, {});
+});
+console.log(result);
+}
+
+goDetail = (idx) => {
+  console.log('indexhome: ', idx);
+  console.log('this.orders[idx]: ', this.orders[idx]);
+  const modalOptions: ModalOptions = { enableBackdropDismiss: true, showBackdrop: true};
+  const productModal: Modal = this.modalCtrl.create('ProductModalPage', { 
+    product: this.orders[idx]
+  }, modalOptions);
+   productModal.present();
+}
+
+goToHome() {
+  this.navCtrl.setRoot('HomePage');
+}
 
 }

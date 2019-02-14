@@ -12,7 +12,7 @@ import { IonicPage } from 'ionic-angular';
 })
 export class ProductModalPage {
   product: Product;
-
+  produk: any;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -20,6 +20,9 @@ export class ProductModalPage {
     private view: ViewController
     ) {
       this.product = this.navParams.get('product');
+      console.log(this.product);
+      this.produk = this.navParams.get('product').datatotal.produk;
+      console.log('produk', this.produk);
   }
 
   _closeModal = (addToCart) => {

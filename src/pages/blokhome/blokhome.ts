@@ -70,7 +70,6 @@ export class BlokhomePage {
     
       this.selectedTabIndex = ev.index;
       // this.storage.set('blokno', indexhome.blok_no);
-    console.log('ev.index', ev.index);
       // this.superTabs.clearBadge(this.blokshome[ev.index].title);
       // console.log('supertabs', this.blokshome[ev.index].title);
 }

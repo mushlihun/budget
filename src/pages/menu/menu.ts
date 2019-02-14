@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions, ViewController, Item } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions, ViewController } from 'ionic-angular';
 // Pages
 import  { ProductModalPage } from '../product-modal/product-modal'; 
 import 'rxjs/add/operator/map';
@@ -50,7 +50,6 @@ export class MenuPage {
  ionViewDidEnter(){
   this.storage.get('nokontrak').then((data) => {
     this.nokontrak = data;
-    console.log('nokontrak', data);
   });
  }
  ionViewDidLoad(){
@@ -235,12 +234,13 @@ _deleteFromCart = (catId,productId) => {
 
 // redirige vers la page de paiments si le panier contient au moins un produit.
   _onOrder = () => {
-  // this._addToOrders();  
+  // this._addToOrders();
+  this._aggregateCart(this.cart);
   this.storage.get('blokno').then((data) => {
     let datatotal = {
       blokhome: this.bloks,
       blokno: data,
-      produk: this.cart      
+      produk: this.cart
     }
     this.storage.set('datatotal', datatotal);
     if(this.cart.length > 0) {
@@ -250,7 +250,7 @@ _deleteFromCart = (catId,productId) => {
     // this._aggregateCart(this.cart);
         }
       }
-      // this.storage.set('cart', datatotal.produk);
+      this.storage.set('cart', datatotal.produk);
       // this.navCtrl.push('PaymentPage', {
       //   produk: this.cart,
       //   datatotal
@@ -302,6 +302,15 @@ _productModal = (indexhome, productId) => {
     }) : '0';
   }
 
+  totalarray = () => {
+    this.total = this.cart.length > 0 ? this.cart
+    .map(item => item.quantity)
+    .reduce((a, b) => {
+      return a+b;
+    }) : '0';
+    console.log('total', this.total);
+  }
+
   /**
     * Prend l'index de la catégorie et ouvre ou la ferme le menu déroulant au click.
     * Ferme les autres menus déroulant si il y en a d'autre ouverts
@@ -318,7 +327,6 @@ _productModal = (indexhome, productId) => {
     });
     this.storage.get('tipes').then((data) => {
       this.bmt = data.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
-        console.log('bmt: ', this.bmt);
     });
   } 
 }

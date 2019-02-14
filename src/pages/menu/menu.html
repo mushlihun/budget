@@ -1,8 +1,11 @@
 <ion-header>
   <ion-navbar>
     <!-- <ion-title></ion-title> -->
-    <p text-left style="
-    margin:0%; padding-left:2%">No. Kontrak <br>{{nokontrak}}</p>
+    <!-- <p text-left style="
+    margin:0%; padding-left:2%">No. Kontrak <br>{{nokontrak}}</p> -->
+    <div text-center>
+      <p>No. Kontrak: {{nokontrak}}</p>
+    </div>
 </ion-navbar>
 </ion-header>
 
@@ -28,10 +31,9 @@
         </ion-item>
         <div clear item-end class="add">
             <input [(ngModel)]="product.quantity" (change)="addToCart(catId, productId)"  placeholder="0" class="inputqty" text-center classtype="number">
-          <button class="counterButton" (click)="_addToCart(catId,productId)">+</button>
-            <!-- <label>Qty</label> -->
+          <!-- <button class="counterButton" (click)="_addToCart(catId,productId)">+</button> -->
             <span type="number" class="counter"></span>
-          <button class="counterButton" (click)="_deleteFromCart(catId,productId)">-</button>
+          <!-- <button class="counterButton" (click)="_deleteFromCart(catId,productId)">-</button> -->
         </div>
       </ion-item>
     </ion-list>

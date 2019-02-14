@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar hideBackButton="true" canswipeback="false">
       <ion-title>Daftar Order</ion-title>
     </ion-navbar>
   </ion-header>
@@ -9,7 +9,7 @@
     <ion-item>
         <h2 item-end>No Kontrak: {{nokontrak}}</h2>
     </ion-item>
-    <ion-item-sliding *ngFor="let item of orders;  let item = index">
+    <ion-item-sliding *ngFor="let item of orders;  let idx = index" (click)="goDetail(idx)">
       <ion-item>
         <h2>Tanggal: {{item.date | date: 'shortDate'}}</h2>
           <p>Blok Rumah: {{item.datatotal.blokhome}}</p>
@@ -27,4 +27,5 @@
             </ion-item-sliding>
     </ion-list>
     <button ion-button full round (click)="kirimwa()">Kirim ke WA</button>
+    <button ion-button full round (click)="goToHome()">kembali</button>
   </ion-content>
