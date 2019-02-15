@@ -38,7 +38,7 @@ export class OrdersPage {
   console.log('orders:', this.orders);
   console.log('order:', JSON.stringify(this.orders));
   this.nokontrak = this.nokontrak;
-  this._totalPrice();
+  // this._totalPrice();
  }
 
  kirimwa() {

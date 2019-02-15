@@ -100,7 +100,6 @@ export class MenuPage {
   this.bmt[productId].quantity
   ? this.bmt[productId].quantity + 1
   : 1;
-    
   }
 }
  }
@@ -127,7 +126,7 @@ export class MenuPage {
 addToCart = (catId, productId) => {
   for (let i = 0; this.bmt[productId] < 0; i++){
     if (this.tahapan[catId].kode_tahapan === this.tahapan[i].kode_tahapan){
-    if (this.bmt[productId].kode_bahan === this.bmt[productId].kode_bahan) {
+    if (this.bmt[productId].kode_bahan === this.bmt[i].kode_bahan) {
       this.jumlah = this.bmt[productId].quantity;
       console.log('addToCart: ',  this.jumlah);
     }
