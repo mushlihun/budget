@@ -29,7 +29,7 @@ import { AuthProvider } from '../providers/auth/auth';
 import { Network } from '@ionic-native/network';
 import { SuperTabsModule, /*SuperTabsController, SuperTabs*/ } from 'ionic2-super-tabs';
 
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @NgModule({
   declarations: [

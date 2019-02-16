@@ -6,7 +6,7 @@ import { OrdersService } from '../../services/orders.service';
 import { Order } from '../../models/menu.model'
 import { AuthProvider } from '../../providers/auth/auth';
 import { Storage } from '@ionic/storage';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @IonicPage()
 @Component({
@@ -37,21 +37,22 @@ export class OrdersPage {
  ionViewDidEnter(){
   console.log('orders:', this.orders);
   console.log('order:', JSON.stringify(this.orders));
-  this.nokontrak = this.nokontrak;
+  // this.nokontrak = this.nokontrak;
   // this._totalPrice();
  }
 
  kirimwa() {
   let text = 'Check out the Ionic Academy!';
   let url = 'https://ionicacademy.com';
-   let datatot = this.orders;
+  let datatot = JSON.stringify(this.orders);
+  // let datatot = this.orders.map(Math.sqrt);
   //  let datablok = data.produk;
   console.log(datatot);
   // // this.auth.sumbit(datatot).subscribe((resp) => {
   // //   console.log('submit', resp);
   // // });
   // this.datatot = this.orders;
-  this.socialSharing.shareViaWhatsApp(text, null, url).then((data) => {
+  this.socialSharing.shareViaWhatsApp('081250230240', datatot,  null).then((data) => {
     console.log(data);
     // Success
   }).catch((e) => {
@@ -89,6 +90,14 @@ goDetail = (idx) => {
 
 goToHome() {
   this.navCtrl.setRoot('HomePage');
+}
+
+_deleteProduct = (idx) => {
+  if(this.orders.length === 1) {
+    this.navCtrl.pop();
+  } else {
+    this.orders.splice(idx, 1);
+  }
 }
 
 }

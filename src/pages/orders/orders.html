@@ -9,8 +9,8 @@
     <ion-item>
         <h2 item-end>No Kontrak: {{nokontrak}}</h2>
     </ion-item>
-    <ion-item-sliding *ngFor="let item of orders;  let idx = index" (click)="goDetail(idx)">
-      <ion-item>
+    <ion-item-sliding *ngFor="let item of orders;  let idx = index" >
+      <ion-item (click)="goDetail(idx)">
         <h2>Tanggal: {{item.date | date: 'shortDate'}}</h2>
           <p>Blok Rumah: {{item.datatotal.blokhome}}</p>
           <p>Blok No: {{item.datatotal.blokno}}</p>
@@ -24,6 +24,9 @@
                   <ion-note item-end>Jumlah Bahan: {{product.quantity}}</ion-note>
                   <ion-note item-end>Satuan: {{product.satuan}}</ion-note>
               </ion-item> -->
+                <ion-item-options side="left" (click)="_deleteProduct(productId)">
+                  <button ion-button>Delete</button>
+                </ion-item-options>
             </ion-item-sliding>
     </ion-list>
     <button ion-button full round (click)="kirimwa()">Kirim ke WA</button>

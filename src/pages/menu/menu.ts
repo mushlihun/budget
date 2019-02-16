@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions, ViewController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ModalController, Modal, ModalOptions, Slides, Content, ViewController } from 'ionic-angular';
 // Pages
 import  { ProductModalPage } from '../product-modal/product-modal'; 
 import 'rxjs/add/operator/map';
@@ -11,12 +11,15 @@ import 'rxjs/add/operator/map';
 import { Categories } from '../../models/menu.model';
 import { Storage } from '@ionic/storage';
 import { OrdersService } from '../../services/orders.service';
+import { GlobalServiceProvider } from '../../providers/global-service/global-service';
 @IonicPage()
 @Component({
   selector: 'page-menu',
   templateUrl: 'menu.html'
 })
 export class MenuPage {
+  @ViewChild('SwipedTabsSlider') SwipedTabsSlider: Slides ;
+  @ViewChild('scroll') scroll: Content;
   menu: Categories[];
   bmt: any;
   bahan: any;
@@ -30,11 +33,17 @@ export class MenuPage {
   blokno: any;
   produkall: any;
   produk: any = [];
-
+  
+  public blokshome: any = [];
+  isLastPage: boolean = false;
+  selectedTabIndex = 0;
+  SwipedTabsIndicator :any= null;
+  no_kontrak: any;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    // private menuService: MenuService,
+    // private menuService: MenuService,    
+    public globalService: GlobalServiceProvider,
     private ordersService: OrdersService,
     private storage: Storage,
     private modalCtrl: ModalController,
@@ -45,13 +54,66 @@ export class MenuPage {
     // .then(menu => {
     //   this.menu = menu.categories;
     // });
+    
+    // this.bloks = this.navParams.get('bloks').kode_lokasi;
+    // this.no_kontrak = this.navParams.get('bloks').no_kontrak;
+    // console.log('this.blok', this.bloks);
+    // console.log('this.blok', this.no_kontrak);
  }
 
  ionViewDidEnter(){
   this.storage.get('nokontrak').then((data) => {
     this.nokontrak = data;
   });
+  this.SwipedTabsIndicator = document.getElementById("indicator");
+  this.kontrakdetail();
  }
+
+ onTabSelect(ev: any) {
+  // this.selectedTabIndex = ev.index;
+  
+    this.selectedTabIndex = ev.index;
+    // this.storage.set('blokno', indexhome.blok_no);
+    // this.superTabs.clearBadge(this.blokshome[ev.index].title);
+    // console.log('supertabs', this.blokshome[ev.index].title);
+}
+click(indexhome) {
+  this.storage.set('blokno', indexhome.blok_no);
+  this.storage.get('budgets').then((data) => {
+    let bmt = data.budget.filter(item => item.tipe === indexhome.tipe);
+    this.storage.set('tipes', bmt);
+  });
+}
+
+getkontrakheader() {
+  this.storage.get('kontrakheader').then((data) => {
+    console.log('kontrakheader', data);
+    let bmt = data.filter(item => item.kode_lokasi === this.bloks);
+    console.log('kontrakheader', bmt);
+  });
+}
+kontrakdetail() {
+  this.storage.get('nokontrak').then((data) => {
+    console.log('nokontrak', data);
+    this.no_kontrak = data;
+  });
+  this.storage.get('kontrakdetail').then((data) => {
+    if(data && data.length > 0) {
+      console.log('this.no_kontrak', this.no_kontrak);
+      console.log('this.bloks', this.bloks);
+    this.blokshome = data.filter(item => item.no_kontrak === this.no_kontrak);
+    this.isLastPage = true;
+    console.log('this.blokshome', this.blokshome);
+    } else {
+      this.isLastPage = false;
+    }
+  }, (err) => {
+    let error = err.json();
+    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+    console.log(err);
+    });
+}
+
  ionViewDidLoad(){
   this.storage.get('blok').then((data) => {
     this.bloks = data;
@@ -142,6 +204,7 @@ addToCart = (catId, productId) => {
     satuan : this.bmt[productId].satuan
   }
   console.log('produk,addToCart: ', produk);
+  console.log('this.cart: ', this.cart);
   // this._onOrder();
 }
 
@@ -327,5 +390,6 @@ _productModal = (indexhome, productId) => {
     this.storage.get('tipes').then((data) => {
       this.bmt = data.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
     });
-  } 
+  }
+
 }

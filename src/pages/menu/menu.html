@@ -10,6 +10,9 @@
 </ion-header>
 
 <ion-content class="body">
+    <!-- <super-tabs *ngIf="isLastPage" scrollTabs="true" toolbarBackground="primary" toolbarColor="light" indicatorColor="light" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
+        <super-tab *ngFor="let page of blokshome; let indexhome of blokshome[kontrak.blok_no]" [title]="page.blok_no" (click)="click(indexhome)"></super-tab>
+    </super-tabs>   -->
 <ion-list class="categoriesList">
   <ion-list-header *ngFor="let t of tahapan; let catId = index; let indextahap of tahapan[tahapan.kode_tahapan]" no-lines no-padding no-margin>
       <!-- <ion-list-header *ngFor="let t of tahapan; let catId of tahapan[tahapan.kode_tahapan]" no-lines no-padding no-margin> -->
