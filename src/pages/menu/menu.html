@@ -18,14 +18,14 @@
       <!-- <ion-list-header *ngFor="let t of tahapan; let catId of tahapan[tahapan.kode_tahapan]" no-lines no-padding no-margin> -->
       <button no-lines (click)="_toggleCategory(catId, indextahap)">
         <div class="catContainer">
-          <img width="25" height="25" src="{{'assets/imgs/fanta.ico'}}">
+          <ion-icon style="color: orangered" name="aperture"></ion-icon>
           <h2>{{t.nama_tahapan}}</h2>
         </div>
       </button>
     <ion-list *ngIf="bmt && t.open">
       <ion-item *ngFor="let product of bmt; let productId = index">
         <ion-thumbnail item-start (click)="_productModal(catId, productId)">
-          <img src="{{'assets/imgs/coca.ico'}}">
+          <ion-icon style="color: lightseagreen" name="hammer"></ion-icon>
         </ion-thumbnail>
         <h3 class="name" (click)="_productModal(catId, productId)">{{product.name}}</h3>
         <ion-item class="namaproduk" text-wrap>

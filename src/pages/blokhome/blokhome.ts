@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Slides, Content, Events, ViewContr
 import { AuthProvider } from '../../providers/auth/auth';
 import { GlobalServiceProvider } from '../../providers/global-service/global-service';
 import { Storage } from '@ionic/storage';
+import { OrdersService } from '../../services/orders.service';
 // import { SuperTabsComponent } from 'ionic2-super-tabs';
 // import { SuperTabsModule } from 'ionic2-super-tabs';
 //Models
@@ -43,6 +44,7 @@ export class BlokhomePage {
 
   constructor(
     private storage: Storage,
+    private ordersService: OrdersService,
     public alertCtrl: AlertController,
     public auth: AuthProvider,
     public globalService: GlobalServiceProvider,
@@ -131,10 +133,33 @@ export class BlokhomePage {
     this.storage.get('datatotal').then((data) => {
       let datatotal = data;
    
-    this.navCtrl.push('PaymentPage', {
-        produk: this.cart,
-        datatotal: datatotal
-      });
+    // this.navCtrl.push('PaymentPage', {
+    //     produk: this.cart,
+    //     datatotal: datatotal
+    //   });
+
+    this._addToOrders(datatotal);
+    const finalOrder = {
+      date: new Date(),
+      datatotal: datatotal,
+    }
+    console.log('finalOrder blokhome', finalOrder);
+    this.navCtrl.push('OrdersPage', {
+      finalOrder
+    });
+  
+    });
+  }
+
+  _addToOrders = (datatotal) => {
+    this.storage.get('blokno').then((data) => {
+    const lastOrder = {
+      date: new Date(),
+      // datatotal: this.produkall,
+      datatotal: datatotal,
+    }
+    this.ordersService.newOrder(lastOrder);
+    console.log('_addToOrders blokhome', lastOrder);
     });
   }
 }

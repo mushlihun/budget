@@ -328,7 +328,16 @@ _deleteFromCart = (catId,productId) => {
   //   }
   //   console.log('datatotalp', datatotal.produk);
   //   console.log('datatotals', this.cart);
+
+  this.navCtrl.push('PaymentPage', {
+    produk: datatotal.produk,
+    datatotal: datatotal
   });
+
+  });
+  
+ 
+  
   }
 
 /**

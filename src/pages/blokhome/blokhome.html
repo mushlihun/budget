@@ -8,8 +8,9 @@
 
   <ion-navbar>
     <ion-title hideBackButton="true" canswipeback="false">Blok Rumah</ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="_closeModal()">Total</button>
+    <ion-buttons (click)="_closeModal()" end>
+      <!-- <button ion-button (click)="_closeModal()">Total</button> -->
+      <button ion-button ><ion-icon item-end class="logout" style="color: dodgerblue" name="cart">  Tutup</ion-icon></button>
     </ion-buttons>
   </ion-navbar>
   <!-- <ion-list>
