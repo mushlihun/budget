@@ -10,7 +10,7 @@
     <ion-title hideBackButton="true" canswipeback="false">Blok Rumah</ion-title>
     <ion-buttons (click)="_closeModal()" end>
       <!-- <button ion-button (click)="_closeModal()">Total</button> -->
-      <button ion-button ><ion-icon item-end class="logout" style="color: dodgerblue" name="cart">  Tutup</ion-icon></button>
+      <button ion-button ><ion-icon item-end class="logout" style="color: dodgerblue" name="cart">  Total</ion-icon></button>
     </ion-buttons>
   </ion-navbar>
   <!-- <ion-list>
@@ -33,8 +33,9 @@
   </ion-content> -->
   </ion-header>
   <ion-content>
+      <!-- <ion-input (change)="blokhome()" ></ion-input> -->
       <super-tabs *ngIf="isLastPage" scrollTabs="true" toolbarBackground="primary" toolbarColor="light" indicatorColor="light" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
-          <super-tab *ngFor="let page of blokshome; let indexhome of blokshome[kontrak.blok_no]" [root]="MenuPage" [title]="page.blok_no" (click)="click(indexhome)"></super-tab>
+        <super-tab *ngFor="let page of blokshome; let indexhome of blokshome[kontrak.blok_no]" [root]="MenuPage" [title]="page.blok_no" (click)="click(indexhome)"></super-tab>
       </super-tabs>  
       <!-- <ion-list>
         <ion-item *ngFor="let item of blokshome; let indexhome of blokshome[kontrak.blok_no]" (click)="itemClicked($event, indexhome)">

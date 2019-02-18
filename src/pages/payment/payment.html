@@ -9,14 +9,14 @@
       <ion-item-sliding *ngFor="let product of cart; let productId = index" #index>
         <ion-item >
           <ion-thumbnail item-start>
-            <img src="{{'assets/imgs/fanta.ico'}}">
+            <ion-icon style="font-size: 2em; margin: 20px;" name="construct"></ion-icon>
           </ion-thumbnail>
           <h3 class="name">{{product.nama_bahan}}</h3>
           <p>{{nokontrak}}</p>
           <div clear item-end>
             <div clear item-end>
-              <p>{{product.quantity}}</p>
-              <p>{{product.satuan}}</p>
+              <p>{{product.quantity}} {{product.satuan}}</p>
+              <!-- <p>{{product.satuan}}</p> -->
               <!-- Qty: Rp {{product.quantity}} ({{product.quantity * product.price}}) -->
             </div>
           </div>

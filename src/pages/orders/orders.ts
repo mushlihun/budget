@@ -42,12 +42,19 @@ export class OrdersPage {
  }
 
  kirimwa() {
-  let text = 'Check out the Ionic Academy!';
-  let url = 'https://ionicacademy.com';
   let datatot = JSON.stringify(this.orders);
+  let todaysDate = new Date();
+  let datatots = this.orders.filter(item => item.date === todaysDate);
   // let datatot = this.orders.map(Math.sqrt);
   //  let datablok = data.produk;
-  console.log(datatot);
+  console.log('datatot', datatot);
+  // for (let i=0; i <= this.orders.length; i++) {
+  // console.log('this.orders[i].date', this.orders[i].date);
+  console.log('todaysDate', datatots);
+    // if (this.orders[i].date === todaysDate) {
+    //   console.log(JSON.parse(datatot));
+    // }
+  // }
   // // this.auth.sumbit(datatot).subscribe((resp) => {
   // //   console.log('submit', resp);
   // // });

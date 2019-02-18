@@ -125,7 +125,8 @@ export class PaymentPage {
       datatotal: this.datatotal,
     }
     console.log('finalOrder', finalOrder);
-    this.navCtrl.push('OrdersPage', {
+    // this.navCtrl.push('OrdersPage', {
+    this.navCtrl.push('ConfirmationPage', {
       finalOrder
     });
   }

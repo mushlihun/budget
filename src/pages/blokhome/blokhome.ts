@@ -138,7 +138,7 @@ export class BlokhomePage {
     //     datatotal: datatotal
     //   });
 
-    this._addToOrders(datatotal);
+    // this._addToOrders(datatotal);
     const finalOrder = {
       date: new Date(),
       datatotal: datatotal,
@@ -161,5 +161,11 @@ export class BlokhomePage {
     this.ordersService.newOrder(lastOrder);
     console.log('_addToOrders blokhome', lastOrder);
     });
+  }
+  blokhome() {
+    this.storage.get('tahapan').then((data) => {
+      let tahapan = data.tahapan.sort().reverse();
+      this.navCtrl.push('MenuPage');
+      });
   }
 }

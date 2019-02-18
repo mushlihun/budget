@@ -19,9 +19,11 @@
       <button (click)="_onChoose('italian')" ion-button round class="button">Hokiland Residence</button> -->
       <ion-grid>
           <ion-row>
-              <ion-col col-6 *ngFor="let item of lokasi; let lokasiId of lokasi[lokasi.kode_lokasi]; let odd=odd; let even=even;" [style.border-style]="'inset'" [style.background-color]="even ? '#488aff' : '#00ffff'" (click)="goBlok(lokasiId)">
-                <ion-icon style="font-size: 2em" name="home"></ion-icon>
-                  <h3>{{item.kode_lokasi}}</h3>
+              <!-- <ion-col col-6 *ngFor="let item of lokasi; let lokasiId of lokasi[lokasi.kode_lokasi]; let odd=odd; let even=even;" [style.border-style]="'inset'" [style.background-color]="even ? '#488aff' : '#00ffff'" (click)="goBlok(lokasiId)"> -->
+                <ion-col col-6 *ngFor="let item of lokasi; let lokasiId of lokasi[lokasi.kode_lokasi];" (click)="goBlok(lokasiId)">
+                <!-- <ion-icon style="font-size: 2em" name="home"></ion-icon> -->
+                <img style="max-width: 70%" class="logos" src="assets/imgs/home-icon.png" alt="">
+                  <!-- <h3>{{item.kode_lokasi}}</h3> -->
                   <p>{{item.nama_lokasi}}</p>
               </ion-col>
           </ion-row>
