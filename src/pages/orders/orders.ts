@@ -44,17 +44,17 @@ export class OrdersPage {
  kirimwa() {
   let datatot = JSON.stringify(this.orders);
   let todaysDate = new Date();
-  let datatots = this.orders.filter(item => item.date === todaysDate);
+  console.log('orders todaysDate', this.orders[0].date);
+  console.log('todaysDate', todaysDate);
+  // let datatots = this.orders.filter(item => item.date === todaysDate);
   // let datatot = this.orders.map(Math.sqrt);
   //  let datablok = data.produk;
-  console.log('datatot', datatot);
-  // for (let i=0; i <= this.orders.length; i++) {
-  // console.log('this.orders[i].date', this.orders[i].date);
-  console.log('todaysDate', datatots);
+  // console.log('datatot', datatots);
+  for (let i=0; i <= this.orders.length; i++) {
     // if (this.orders[i].date === todaysDate) {
-    //   console.log(JSON.parse(datatot));
+      console.log(JSON.stringify(datatot));
     // }
-  // }
+  }
   // // this.auth.sumbit(datatot).subscribe((resp) => {
   // //   console.log('submit', resp);
   // // });

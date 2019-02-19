@@ -67,7 +67,8 @@ export class GlobalServiceProvider {
   presentToast(message) {
     const toast = this.toastCtrl.create({
       message: message,
-      duration: 2000
+      duration: 2000,
+      position: 'top',
     });
     toast.present();
   }
