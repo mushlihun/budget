@@ -77,6 +77,7 @@ export class BlokhomePage {
 }
   click(indexhome) {
     this.storage.set('blokno', indexhome.blok_no);
+    this.storage.set('tipermh', indexhome.tipe);
     this.storage.get('budgets').then((data) => {
       let bmt = data.budget.filter(item => item.tipe === indexhome.tipe);
       this.storage.set('tipes', bmt);
@@ -85,21 +86,16 @@ export class BlokhomePage {
 
   getkontrakheader() {
     this.storage.get('kontrakheader').then((data) => {
-      console.log('kontrakheader', data);
       let bmt = data.filter(item => item.kode_lokasi === this.bloks);
       console.log('kontrakheader', bmt);
     });
   }
   kontrakdetail() {
     this.storage.get('nokontrak').then((data) => {
-      console.log('nokontrak', data);
       this.no_kontrak = data;
     });
     this.storage.get('kontrakdetail').then((data) => {
       if(data && data.length > 0) {
-        console.log('this.no_kontrak', this.no_kontrak);
-        console.log('this.bloks', this.bloks);
-        console.log('this.bloks', this.navParams.get('bloks'));
       this.blokshome = data.filter(item => item.no_kontrak === this.no_kontrak);
       this.isLastPage = true;
       } else {
@@ -152,19 +148,18 @@ export class BlokhomePage {
   }
 
   _addToOrders = (datatotal) => {
-    this.storage.get('blokno').then((data) => {
     const lastOrder = {
       date: new Date(),
       // datatotal: this.produkall,
       datatotal: datatotal,
     }
     this.ordersService.newOrder(lastOrder);
-    console.log('_addToOrders blokhome', lastOrder);
-    });
+    console.log('_addToOrders lastOrder', lastOrder);
   }
   blokhome() {
     this.storage.get('tahapan').then((data) => {
       let tahapan = data.tahapan.sort().reverse();
+      console.log('tahapan blokhome', tahapan);
       this.navCtrl.push('MenuPage');
       });
   }

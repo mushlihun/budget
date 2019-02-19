@@ -66,7 +66,7 @@ export class MenuPage {
     this.nokontrak = data;
   });
   this.SwipedTabsIndicator = document.getElementById("indicator");
-  this.kontrakdetail();
+  // this.kontrakdetail();
  }
 
  onTabSelect(ev: any) {
@@ -87,7 +87,6 @@ click(indexhome) {
 
 getkontrakheader() {
   this.storage.get('kontrakheader').then((data) => {
-    console.log('kontrakheader', data);
     let bmt = data.filter(item => item.kode_lokasi === this.bloks);
     console.log('kontrakheader', bmt);
   });
@@ -390,15 +389,29 @@ _productModal = (indexhome, productId) => {
     * @param {number} i
     */
   _toggleCategory(i, indextahap) {
+    this.globalService.presentRouteLoader();
     this.tahapan[i].open = !this.tahapan[i].open;
     this.tahapan.forEach(item => {
       if(item !== this.tahapan[i]) {
         item.open = false;
       }
     });
-    this.storage.get('tipes').then((data) => {
-      this.bmt = data.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
+    this.storage.get('budgets').then((data) => {
+      let bmt = data.budget.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
+      this.storage.get('tipermh').then((data) => {
+        let bmts = bmt.filter(item => item.tipe === data);
+        if (bmts.length !== 0 ) {
+          this.bmt = bmts;
+        } else {
+          this.globalService.presentToast('Bahan tidak ditemukan, coba lagi');
+        }
+      });
     });
+    // this.storage.get('tipes').then((data) => {
+    //   console.log('_toggleCategory data', data);
+    //   this.bmt = data.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
+    //   console.log('_toggleCategory this.bmt', this.bmt);
+    // });
   }
 
 }

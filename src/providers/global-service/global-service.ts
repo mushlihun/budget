@@ -64,6 +64,14 @@ export class GlobalServiceProvider {
     toast.present();
   }
 
+  presentToast(message) {
+    const toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
+  }
+
   // Action sheet services
   presentActionSheet(title, firstIcon, firstText, secondIcon, secondText, firstCallback, secondCallback) {
     let actionSheet = this.actionSheetCtrl.create({

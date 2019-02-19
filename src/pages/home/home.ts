@@ -61,6 +61,7 @@ export class HomePage {
   }
 
   goBlok(item) {
+    this.globalService.presentRouteLoader();
     this.storage.set('blok', item.kode_lokasi);
     this.navCtrl.setRoot('BlokhomePage', {bloks: item});
   }
