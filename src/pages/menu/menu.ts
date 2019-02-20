@@ -249,7 +249,7 @@ _addToOrders = () => {
     blokno: data
   }
   const lastOrder = {
-    date: new Date(),
+    // date: new Date(),
     datatotal: bloks,
     produkall: this.produk,
   }

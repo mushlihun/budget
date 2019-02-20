@@ -133,6 +133,16 @@ export class GlobalServiceProvider {
     presentAlert.present();
   }
 
+  showAlert() {
+    let alert = this.alertCtrl.create({       
+      subTitle: 'Data untuk dikirim kosong, coba masukan data input!'             
+    });
+    alert.present();
+    setTimeout(()=>{
+        alert.dismiss();
+    }, 2000);
+  }
+
   // Alert with form input
   presentAlertInput(title, inputs, text, customClass, callback) {
     let presentAlert = this.alertCtrl.create({

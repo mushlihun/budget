@@ -103,7 +103,7 @@ export class PaymentPage {
   _addToOrders = () => {
     this.storage.get('blokno').then((data) => {
     const lastOrder = {
-      date: new Date(),
+      // date: new Date(),
       // datatotal: this.produkall,
       datatotal: this.datatotal,
     }
@@ -121,7 +121,7 @@ export class PaymentPage {
   _onPay = () => {
     this._addToOrders();
     const finalOrder = {
-      date: new Date(),
+      // date: new Date(),
       datatotal: this.datatotal,
     }
     console.log('finalOrder', finalOrder);

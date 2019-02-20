@@ -7,6 +7,7 @@ import { Order } from '../../models/menu.model'
 import { AuthProvider } from '../../providers/auth/auth';
 import { Storage } from '@ionic/storage';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { GlobalServiceProvider } from '../../providers/global-service/global-service';
 
 @IonicPage()
 @Component({
@@ -21,6 +22,7 @@ export class OrdersPage {
   orders: Order[] = [];
   constructor(
     public auth: AuthProvider,
+    public globalService: GlobalServiceProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
     private modalCtrl: ModalController,
@@ -42,29 +44,33 @@ export class OrdersPage {
  }
 
  kirimwa() {
-  let datatot = JSON.stringify(this.orders);
-  let todaysDate = new Date();
-  console.log('orders todaysDate', this.orders[0].date);
-  console.log('todaysDate', todaysDate);
-  // let datatots = this.orders.filter(item => item.date === todaysDate);
-  // let datatot = this.orders.map(Math.sqrt);
-  //  let datablok = data.produk;
-  // console.log('datatot', datatots);
-  for (let i=0; i <= this.orders.length; i++) {
-    // if (this.orders[i].date === todaysDate) {
-      console.log(JSON.stringify(datatot));
+   if (this.orders.length === 0) {
+    this.globalService.showAlert();
+   } else if (this.orders.length !== 0 || this.orders.length === null) {
+    let datatot = JSON.stringify(this.orders);
+    // console.log('orders todaysDate', this.orders[0].date);
+    //  let datablok = data.produk;
+    // for (let i=0; i <= this.orders.length; i++) {
+    //   if (this.orders[i].date === todaysDate) {
+    //     console.log('datatotal', JSON.stringify(datatot));
+        console.log('datatot', datatot);
+    //   }
     // }
-  }
-  // // this.auth.sumbit(datatot).subscribe((resp) => {
-  // //   console.log('submit', resp);
-  // // });
-  // this.datatot = this.orders;
-  this.socialSharing.shareViaWhatsApp('081250230240', datatot,  null).then((data) => {
-    console.log(data);
-    // Success
-  }).catch((e) => {
-    // Error!
-  });
+    // // this.auth.sumbit(datatot).subscribe((resp) => {
+    // //   console.log('submit', resp);
+    // // });
+    // this.datatot = this.orders;
+    this.socialSharing.shareViaWhatsApp(datatot,  null).then((data) => {
+      console.log(data);
+      this.globalService.presentToast('Share whatsapp berhasil');
+      // Success
+    }).catch((e) => {
+      // Error!
+      console.log(e);
+      this.globalService.presentToast('Share whatsapp gagal, coba lagi');
+    });
+   }
+  
  }
 
  _totalPrice = () => {
