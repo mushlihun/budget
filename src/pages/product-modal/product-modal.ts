@@ -11,6 +11,7 @@ import { IonicPage } from 'ionic-angular';
   templateUrl: 'product-modal.html',
 })
 export class ProductModalPage {
+  date: any;
   product: Product;
   produk: any;
   constructor(
@@ -21,6 +22,8 @@ export class ProductModalPage {
     ) {
       this.product = this.navParams.get('product');
       console.log(this.product);
+      this.date = this.navParams.get('date');
+      console.log(this.date);
       this.produk = this.navParams.get('product').datatotal.produk;
       console.log('produk', this.produk);
   }

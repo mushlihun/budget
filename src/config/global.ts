@@ -21,6 +21,7 @@ let global = {
         budget: "/api/auth/budget",
         bmt: "/api/auth/budgets",
         submit: "/api/auth/budget",
+        order: "/api/auth/order",
         register: "/api/v1/register",
         uploadPhoto: "/api/v1/register/photo",
         uploadNUP: "/api/v1/nups/photo",

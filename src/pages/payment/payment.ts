@@ -4,6 +4,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 //Services
 import { OrdersService } from '../../services/orders.service';
 import { Storage } from '@ionic/storage';
+import { AuthProvider } from '../../providers/auth/auth';
+import { GlobalServiceProvider } from '../../providers/global-service/global-service';
 
 @IonicPage()
 @Component({
@@ -13,11 +15,16 @@ import { Storage } from '@ionic/storage';
 export class PaymentPage {
   datatotal: any[] = [];
   cart: any[];
+  produks: any[];
   nokontrak: any;
   total: number;
   blokno: any;
+  bloks: any;
+  no_kontrak: any;
   produkall: any;
   constructor(
+    private auth: AuthProvider,
+    public globalService: GlobalServiceProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
     public storage: Storage,
@@ -26,7 +33,12 @@ export class PaymentPage {
     this.cart = this._aggregateCart(navParams.get('produk'));
     this.datatotal = navParams.get('datatotal');
   }
-   /**
+  
+  ionViewCanEnter(){
+    
+  }
+
+  /**
     * Prend le panier en cours, récupère les éléments par type 
     * et les aggrège et renvoie les quantités de chaques produits 
     * @param {object} cart
@@ -86,6 +98,23 @@ export class PaymentPage {
     }
     
   }
+
+  _onPay = () => {
+    const finalOrder = {
+      // date: new Date(),
+      datatotal: this.datatotal,
+    }
+    console.log('finalOrder', finalOrder);
+    
+    this._addToOrders();
+    this.navCtrl.push('ConfirmationPage', {
+    finalOrder
+  });
+    // this.navCtrl.push('OrdersPage', {
+    // this.navCtrl.push('ConfirmationPage', {
+    //   finalOrder
+    // });
+  }
   
    /**
     * Ajoute aux commandes de l'utilisateur la commande actuelle
@@ -118,16 +147,5 @@ export class PaymentPage {
   }
   
   // Appelle la fonction addToCart et push la view suivante
-  _onPay = () => {
-    this._addToOrders();
-    const finalOrder = {
-      // date: new Date(),
-      datatotal: this.datatotal,
-    }
-    console.log('finalOrder', finalOrder);
-    // this.navCtrl.push('OrdersPage', {
-    this.navCtrl.push('ConfirmationPage', {
-      finalOrder
-    });
-  }
+  
 }

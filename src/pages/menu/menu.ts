@@ -329,6 +329,7 @@ _deleteFromCart = (catId,productId) => {
   //   console.log('datatotals', this.cart);
 
   this.navCtrl.push('PaymentPage', {
+    // date: new Date()
     produk: datatotal.produk,
     datatotal: datatotal
   });

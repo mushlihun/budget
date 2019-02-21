@@ -182,6 +182,18 @@ export class AuthProvider {
     }
   }
 
+  order(token, data) {
+    if (this.connectivityService.isOnline()){
+      let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+      headers.append('Authorization', 'Bearer '+ token);
+      let options = new RequestOptions({headers: headers});
+      let body = this.formData(data);
+      return this.http.post(this.api.getApiUrl(Config.apis.order), body, options).map(res => res.json());
+    } else {
+      this.connectivityService.toastInfo('You are offline, please check your internet connection', 3000, 'top');
+    }
+  }
+
   formData(data){
     return Object.keys(data).map(function(key){
       return encodeURIComponent(key)+'='+encodeURIComponent(data[key]);

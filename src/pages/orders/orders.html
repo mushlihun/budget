@@ -11,7 +11,7 @@
     </ion-item>
     <ion-item-sliding *ngFor="let item of orders;  let idx = index" >
       <ion-item (click)="goDetail(idx)">
-        <!-- <h2>Tanggal: {{item.date | date: 'shortDate'}}</h2> -->
+        <h2>Tanggal: {{this.date | date: 'shortDate'}}</h2>
           <p>Blok Rumah: {{item.datatotal.blokhome}}</p>
           <p>Blok No: {{item.datatotal.blokno}}</p>
           <p>Jumlah Pesanan: {{item.datatotal.produk.length}}</p>

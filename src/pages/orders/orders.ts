@@ -20,6 +20,13 @@ export class OrdersPage {
   produkall: any;
   total: number;
   orders: Order[] = [];
+  produks: any[];
+  blokno: any;
+  bloks: any;
+  date: any;
+  no_kontrak: any;
+  tipe: any;
+  token: any;
   constructor(
     public auth: AuthProvider,
     public globalService: GlobalServiceProvider,
@@ -31,9 +38,29 @@ export class OrdersPage {
     private socialSharing: SocialSharing
   ) {
     this.orders = this.ordersService.getOrders();
+    this.date = new Date();
+    console.log(this.date);
     this.storage.get('nokontrak').then((data) => {
       this.nokontrak = data;
-    }); 
+    });
+    this.storage.get('blokno').then((data) => {
+      this.blokno = data;
+    });
+    this.storage.get('blok').then((data) => {
+      this.bloks = data;
+    });
+    this.storage.get('nokontrak').then((data) => {
+      this.no_kontrak = data;
+    });
+    this.storage.get('cart').then((data) => {
+      this.produks = data;
+    });
+    this.storage.get('tipermh').then((data) => {
+      this.tipe = data;
+    });
+    this.storage.get('token').then((data) => {
+      this.token = data;
+    });
  }
 
  ionViewDidEnter(){
@@ -43,7 +70,40 @@ export class OrdersPage {
   // this._totalPrice();
  }
 
+ pushdata() {
+  for (let i=0; i < this.produks.length; i++) {
+    let tahapan = this.produks[i].kode_tahapan;
+    let kodebahan = this.produks[i].kode_bahan;
+    let namabahan = this.produks[i].nama_bahan;
+    let quantity = this.produks[i].quantity;
+    let satuan = this.produks[i].satuan;
+    let untuk = this.produks[i].untuk;
+  let pushdata = {
+    no_kontrak: this.no_kontrak,
+    kode_lokasi: this.bloks,
+    blok_no: this.blokno,
+    tipe: this.tipe,
+    kode_tahapan: tahapan,
+    kode_bahan: kodebahan,
+    nama_bahan: namabahan,
+    quantity: quantity,
+    satuan: satuan,
+    untuk: untuk
+  }
+  console.log('pushdata', pushdata);
+  
+  this.auth.order(this.token, pushdata).subscribe((resp) => {
+    console.log('berhasil input', resp);
+  }, (err) => {
+    let error = err.json();
+    this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+    console.log(err);
+    });
+    }
+ }
+
  kirimwa() {
+   this.pushdata();
    if (this.orders.length === 0) {
     this.globalService.showAlert();
    } else if (this.orders.length !== 0 || this.orders.length === null) {
@@ -96,7 +156,8 @@ goDetail = (idx) => {
   console.log('this.orders[idx]: ', this.orders[idx]);
   const modalOptions: ModalOptions = { enableBackdropDismiss: true, showBackdrop: true};
   const productModal: Modal = this.modalCtrl.create('ProductModalPage', { 
-    product: this.orders[idx]
+    product: this.orders[idx],
+    date: this.date
   }, modalOptions);
    productModal.present();
 }
