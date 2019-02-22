@@ -15,7 +15,7 @@ let global = {
         lokasi: "/api/auth/lokasi",
         kontraks: "/api/auth/kontraks/",
         getkh: "/api/auth/kontraks",
-        kontrak: "/api/auth/kontrak",
+        kontrak: "/api/auth/kontrakdetail",
         tahapan: "/api/auth/tahapan",
         bahan: "/api/auth/bahan",
         budget: "/api/auth/budget",

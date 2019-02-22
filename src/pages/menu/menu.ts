@@ -196,6 +196,7 @@ addToCart = (catId, productId) => {
   // this.jumlah = this.bahan[productId].quantity;
   this.cart.push(this.bmt[productId]);
   this._totalPrice();
+  // this.totalarray(this.bmt[productId]);
   let produk = {
     kode : this.bmt[productId].kode_bahan,
     bahan : this.bmt[productId].nama_bahan,
@@ -373,13 +374,23 @@ _productModal = (indexhome, productId) => {
     }) : '0';
   }
 
-  totalarray = () => {
-    this.total = this.cart.length > 0 ? this.cart
-    .map(item => item.quantity)
-    .reduce((a, b) => {
-      return a+b;
-    }) : '0';
-    console.log('total', this.total);
+  totalarray = (productId) => {
+    console.log('productId', productId);
+    if (productId === productId) {
+      for (let i=0; this.cart.length > 0; i++){
+        this.total = this.cart[i].kode_bahan;
+        console.log('total', this.total);
+      }
+      // this.total = this.cart.length > 0 ? this.cart
+      // .map(item => item.quantity)
+      // .reduce((a, b) => {
+      //   return a+b;
+      // }) : '0';
+      console.log('total', this.total);
+    } else {
+      console.log('total', this.total);
+    }
+    
   }
 
   /**
@@ -391,23 +402,26 @@ _productModal = (indexhome, productId) => {
     */
   _toggleCategory(i, indextahap) {
     this.globalService.presentRouteLoader();
-    this.tahapan[i].open = !this.tahapan[i].open;
-    this.tahapan.forEach(item => {
-      if(item !== this.tahapan[i]) {
-        item.open = false;
-      }
-    });
-    this.storage.get('budgets').then((data) => {
-      let bmt = data.budget.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
-      this.storage.get('tipermh').then((data) => {
-        let bmts = bmt.filter(item => item.tipe === data);
-        if (bmts.length !== 0 ) {
-          this.bmt = bmts;
-        } else {
-          this.globalService.presentToast('Bahan tidak ditemukan, coba lagi');
-        }
+    
+      this.storage.get('budgets').then((data) => {
+        let bmt = data.budget.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
+        this.storage.get('tipermh').then((data) => {
+          let bmts = bmt.filter(item => item.tipe === data);
+          if (bmts.length !== 0) {
+            this.bmt = bmts;
+            this.tahapan[i].open = !this.tahapan[i].open;
+            this.tahapan.forEach(item => {
+              if(item !== this.tahapan[i]) {
+                item.open = false;
+              }
+            });
+          } else {
+            console.log('bmts', bmts);
+            this.globalService.presentToast('Bahan tidak ditemukan, coba lagi');
+          }
+        });
       });
-    });
+    
     // this.storage.get('tipes').then((data) => {
     //   console.log('_toggleCategory data', data);
     //   this.bmt = data.filter(item => item.kode_tahapan === indextahap.kode_tahapan);
