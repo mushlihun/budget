@@ -42,7 +42,6 @@ export class LoginPage {
   }
   checkUserLogin() {
     this.storage.get('isLoggedIn').then((loggedIn) => {
-      console.log('telah login', loggedIn);
       if (loggedIn === true) {
         this.navCtrl.setRoot('HomePage');
       }
@@ -50,18 +49,18 @@ export class LoginPage {
   }
   // Attempt to login in through our User service
   doLogin() {
+    // this.loginForm.value.password = btoa(this.loginForm.value.password);
     this.globalService.presentRouteLoader();
-    if (this.loginForm.value !== null) {
+    if (this.loginForm.value !== null || this.loginForm.value !== '') {
     this.auth.authenticate(this.loginForm.value).subscribe((resp) => {
-      this.storage.set('token', resp.access_token);
-      let accesstoken = resp.access_token;
-      let id = resp.id;
-      this.getTahapan(accesstoken);
-      this.pengawas(accesstoken, id);
+    this.storage.set('token', resp.access_token);
+    let accesstoken = resp.access_token;
+    let id = resp.id;
+    this.pengawas(accesstoken, id);
+    this.getTahapan(accesstoken);
     }, (err) => {
       let error = err.json();
       this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-      console.log(error);
     });
   } else if (this.loginForm.value === null || this.loginForm.value == ""  ) {
     let toast = this.toastCtrl.create({
@@ -75,37 +74,34 @@ export class LoginPage {
 
 pengawas(accesstoken, id) {
   this.auth.pengawas(accesstoken, id).subscribe((resp) => {
-    this.storage.set('kodepengawas', resp.pengawas.kode_pengawas);
-    this.getlokasi(accesstoken, resp.pengawas.kode_pengawas);
+  this.storage.set('kodepengawas', resp.pengawas.kode_pengawas);
+  this.getlokasi(accesstoken, resp.pengawas.kode_pengawas);
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-    console.log(err);
     });
   }
 
   getlokasi(accesstoken, kodepengawas) {
     this.auth.lokasi(accesstoken, kodepengawas).subscribe((resp) => {
-      this.storage.set('lokasi', resp);
-      this.navCtrl.setRoot('HomePage');
+    this.storage.set('lokasi', resp);
+    this.navCtrl.setRoot('HomePage');
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-    console.log(err);
     });
 
   }
 
   getTahapan(data) {
     this.auth.tahapan(data).subscribe((resp) => {
-      this.storage.set('tahapan', resp);
-      this.getbudgetmaterial(data);
-      this.getBahan(data);
-      this.getNokontrak(data);
+    this.storage.set('tahapan', resp);
+    this.getbudgetmaterial(data);
+    this.getBahan(data);
+    this.getNokontrak(data);
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-    console.log(err);
   });
   }
 
@@ -115,7 +111,6 @@ pengawas(accesstoken, id) {
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-    console.log(err);
   });
   }
 
@@ -125,7 +120,6 @@ pengawas(accesstoken, id) {
     }, (err) => {
       let error = err.json();
       this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-      console.log(err);
     });
   }
 
@@ -137,7 +131,6 @@ pengawas(accesstoken, id) {
     }, (err) => {
       let error = err.json();
       this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-      console.log(err);
       });
   }
 
@@ -147,7 +140,6 @@ pengawas(accesstoken, id) {
   }, (err) => {
     let error = err.json();
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-    console.log(err);
     });
   }
 }

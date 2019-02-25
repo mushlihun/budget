@@ -20,8 +20,9 @@ export class PaymentPage {
   total: number;
   blokno: any;
   bloks: any;
-  no_kontrak: any;
   produkall: any;
+  tipe: any;
+  token: any;
   constructor(
     private auth: AuthProvider,
     public globalService: GlobalServiceProvider,
@@ -32,12 +33,61 @@ export class PaymentPage {
   ) {
     this.cart = this._aggregateCart(navParams.get('produk'));
     this.datatotal = navParams.get('datatotal');
+    this.storage.get('tipermh').then((data) => {
+      this.tipe = data;
+    });
+    this.storage.get('token').then((data) => {
+      this.token = data;
+    });
+    this.storage.get('cart').then((data) => {
+      this.produks = data;
+    });
+    this.storage.get('nokontrak').then((data) => {
+      this.nokontrak = data;
+    });
+    this.storage.get('blokno').then((data) => {
+      this.blokno = data;
+    });
+    this.storage.get('blok').then((data) => {
+      this.bloks = data;
+    });
   }
   
   ionViewCanEnter(){
     
   }
 
+  pushdata() {
+    for (let i=0; i < this.produks.length; i++) {
+      let tahapan = this.produks[i].kode_tahapan;
+      let kodebahan = this.produks[i].kode_bahan;
+      let namabahan = this.produks[i].nama_bahan;
+      let quantity = this.produks[i].quantity;
+      let satuan = this.produks[i].satuan;
+      let untuk = this.produks[i].untuk;
+    let pushdata = {
+      no_kontrak: this.nokontrak,
+      kode_lokasi: this.bloks,
+      blok_no: this.blokno,
+      tipe: this.tipe,
+      kode_tahapan: tahapan,
+      kode_bahan: kodebahan,
+      nama_bahan: namabahan,
+      quantity: quantity,
+      satuan: satuan,
+      untuk: untuk
+    }
+    console.log('pushdata', pushdata);
+  
+    this.auth.order(this.token, pushdata).subscribe((resp) => {
+      console.log('berhasil input', resp);
+    }, (err) => {
+      let error = err.json();
+      this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
+      console.log(err);
+      });
+    }
+   }
   /**
     * Prend le panier en cours, récupère les éléments par type 
     * et les aggrège et renvoie les quantités de chaques produits 
@@ -130,15 +180,14 @@ export class PaymentPage {
   }
 
   _addToOrders = () => {
-    this.storage.get('blokno').then((data) => {
     const lastOrder = {
       // date: new Date(),
       // datatotal: this.produkall,
       datatotal: this.datatotal,
     }
     this.ordersService.newOrder(lastOrder);
+    this.pushdata();
     console.log('lastorder', lastOrder);
-    });
   }
 
   // permet de revenir à la view précédente en gardant les éléments du panier

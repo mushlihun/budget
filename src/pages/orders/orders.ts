@@ -24,7 +24,6 @@ export class OrdersPage {
   blokno: any;
   bloks: any;
   date: any;
-  no_kontrak: any;
   tipe: any;
   token: any;
   constructor(
@@ -49,17 +48,18 @@ export class OrdersPage {
     this.storage.get('blok').then((data) => {
       this.bloks = data;
     });
-    this.storage.get('nokontrak').then((data) => {
-      this.no_kontrak = data;
-    });
     this.storage.get('cart').then((data) => {
       this.produks = data;
+      console.log('cart', data);
     });
     this.storage.get('tipermh').then((data) => {
       this.tipe = data;
     });
     this.storage.get('token').then((data) => {
       this.token = data;
+    });
+    this.storage.get('datatotal').then((data) => {
+      console.log('datatotal', data);
     });
  }
 
@@ -79,7 +79,7 @@ export class OrdersPage {
     let satuan = this.produks[i].satuan;
     let untuk = this.produks[i].untuk;
   let pushdata = {
-    no_kontrak: this.no_kontrak,
+    no_kontrak: this.nokontrak,
     kode_lokasi: this.bloks,
     blok_no: this.blokno,
     tipe: this.tipe,
@@ -91,7 +91,7 @@ export class OrdersPage {
     untuk: untuk
   }
   console.log('pushdata', pushdata);
-  
+
   this.auth.order(this.token, pushdata).subscribe((resp) => {
     console.log('berhasil input', resp);
   }, (err) => {
@@ -99,11 +99,11 @@ export class OrdersPage {
     this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
     console.log(err);
     });
-    }
+  }
  }
 
  kirimwa() {
-   this.pushdata();
+  //  this.pushdata();
    if (this.orders.length === 0) {
     this.globalService.showAlert();
    } else if (this.orders.length !== 0 || this.orders.length === null) {
@@ -113,7 +113,6 @@ export class OrdersPage {
     // for (let i=0; i <= this.orders.length; i++) {
     //   if (this.orders[i].date === todaysDate) {
     //     console.log('datatotal', JSON.stringify(datatot));
-        console.log('datatot', datatot);
     //   }
     // }
     // // this.auth.sumbit(datatot).subscribe((resp) => {

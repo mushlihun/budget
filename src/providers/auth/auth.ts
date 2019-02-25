@@ -26,7 +26,6 @@ export class AuthProvider {
   };
 
   authenticate(data) {
-    console.log('data', data);
     if (this.connectivityService.isOnline()){
       let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
       let options = new RequestOptions({headers: headers});

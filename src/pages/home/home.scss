@@ -1,3 +1,4 @@
+
 page-home {
     .body {
           background: url('../assets/imgs/background.jpg') no-repeat transparent;
@@ -7,6 +8,8 @@ page-home {
       height: 100%;
       padding: 0;
       flex-wrap: wrap;
+    font-weight: bold;
+
     }
     
     .body ion-col {

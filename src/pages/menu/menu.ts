@@ -156,7 +156,7 @@ kontrakdetail() {
   //baru
   for (let i=0; i<this.tahapan.length; i++){
   if (this.tahapan[catId].kode_tahapan === this.tahapan[i].kode_tahapan){
-  if (this.bmt[productId].kode_bahan === this.bmt[productId].kode_bahan) {
+  if (this.bmt[productId].kode_bahan === this.bmt[i].kode_bahan) {
     this.bmt[productId].quantity = 
   this.bmt[productId].quantity
   ? this.bmt[productId].quantity + 1
@@ -185,26 +185,22 @@ kontrakdetail() {
   console.log('produk,_addToCart: ', produk);
 }
 addToCart = (catId, productId) => {
-  for (let i = 0; this.bmt[productId] < 0; i++){
-    if (this.tahapan[catId].kode_tahapan === this.tahapan[i].kode_tahapan){
-    if (this.bmt[productId].kode_bahan === this.bmt[i].kode_bahan) {
-      this.jumlah = this.bmt[productId].quantity;
-      console.log('addToCart: ',  this.jumlah);
+  // for (let i = 0; this.tahapan[catId] > 0; i++){
+    // if (this.tahapan[catId].kode_tahapan === this.tahapan[i].kode_tahapan){
+    if (this.bmt[productId].kode_bahan === this.bmt[productId].kode_bahan) {
+    this.jumlah = this.bmt[productId].quantity;
+    this.cart.push(this.bmt[productId]);
+      // this._totalPrice();
+    console.log('this.cart: ', this.cart);
     }
-  }
-}
+  // }
+// }
+console.log('addToCart: ',  this.jumlah);
   // this.jumlah = this.bahan[productId].quantity;
-  this.cart.push(this.bmt[productId]);
-  this._totalPrice();
+  // this.cart.push(this.bmt[productId]);
+  // console.log('this.cart: ', this.cart);
+  // this._totalPrice();
   // this.totalarray(this.bmt[productId]);
-  let produk = {
-    kode : this.bmt[productId].kode_bahan,
-    bahan : this.bmt[productId].nama_bahan,
-    qty : this.bmt[productId].quantity,
-    satuan : this.bmt[productId].satuan
-  }
-  console.log('produk,addToCart: ', produk);
-  console.log('this.cart: ', this.cart);
   // this._onOrder();
 }
 
@@ -230,7 +226,6 @@ addToCarts = (productId) => {
 }
 
 _aggregateCart = (cart) => {
-  console.log('cart', cart);
   let newCart = [];
   cart.forEach(function(item) {
    if(newCart.indexOf(item) < 0) {
@@ -238,7 +233,7 @@ _aggregateCart = (cart) => {
     }
   });
   console.log('newCart: ', newCart);
-  this.storage.set('cart', newCart);
+  // this.storage.set('cart', newCart);
   this.produk = newCart;
   return newCart;
 }
@@ -372,6 +367,7 @@ _productModal = (indexhome, productId) => {
     .reduce((a, b) => {
       return a+b;
     }) : '0';
+    console.log('this.total: ', this.total);
   }
 
   totalarray = (productId) => {
