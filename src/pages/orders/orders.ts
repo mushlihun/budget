@@ -24,6 +24,7 @@ export class OrdersPage {
   blokno: any;
   bloks: any;
   date: any;
+  selectedItems = [];
   tipe: any;
   token: any;
   constructor(
@@ -57,9 +58,6 @@ export class OrdersPage {
     });
     this.storage.get('token').then((data) => {
       this.token = data;
-    });
-    this.storage.get('datatotal').then((data) => {
-      console.log('datatotal', data);
     });
  }
 
@@ -132,6 +130,23 @@ export class OrdersPage {
   
  }
 
+//  ngOnInit() {
+//   const items = this.ordersService.getOrders();
+//   console.log('items: ', items);
+//   const selected = {};
+//   for (const obj of items) {
+//     if (selected[obj.kode_bahan]) {
+//       selected[obj.kode_bahan].count++;
+//     } else {
+//       selected[obj.kode_bahan] = {...obj, count: 1};
+//     }
+//   }
+//   this.selectedItems = Object.keys(selected).map(key => selected[key]);
+//   this.total = this.selectedItems.reduce((a, b) => a + (b.count * b.price), 0);
+//   console.log('this.selectedItems: ', this.selectedItems);
+//   console.log('this.total: ', this.total);
+// }
+
  _totalPrice = () => {
   let props = ['no_urut', 'kode_tahapan', 'kode_bahan', 'nama_bahan',];
   let result = this.orders.filter(function(o1){
@@ -151,8 +166,6 @@ console.log(result);
 }
 
 goDetail = (idx) => {
-  console.log('indexhome: ', idx);
-  console.log('this.orders[idx]: ', this.orders[idx]);
   const modalOptions: ModalOptions = { enableBackdropDismiss: true, showBackdrop: true};
   const productModal: Modal = this.modalCtrl.create('ProductModalPage', { 
     product: this.orders[idx],

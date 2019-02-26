@@ -10,7 +10,9 @@
     <ion-title hideBackButton="true" canswipeback="false">Blok Rumah</ion-title>
     <ion-buttons (click)="_closeModal()" end>
       <!-- <button ion-button (click)="_closeModal()">Total</button> -->
-      <button ion-button ><ion-icon item-end class="logout" style="color: dodgerblue" name="cart">  Total</ion-icon></button>
+      <button ion-button ><ion-icon item-end class="logout" style="color: dodgerblue" name="cart">  Total</ion-icon>
+        <ion-badge *ngIf="cart.length > 0">{{ cart.length }}</ion-badge>
+      </button>
     </ion-buttons>
   </ion-navbar>
   <!-- <ion-list>

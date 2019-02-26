@@ -83,8 +83,8 @@ export class PaymentPage {
       console.log('berhasil input', resp);
     }, (err) => {
       let error = err.json();
-      this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
-      console.log(err);
+      this.globalService.toastInfo(error.message ? error.message : 'Cari sinyal dan aktifkan koneksi jaringan anda !', 3000, 'bottom');
+      // this.globalService.presentAlert('', 'Cari sinyal dan aktifkan koneksi jaringan anda !', 'Tutup', 'alert-register-to-project', () => {});
       });
     }
    }
@@ -151,19 +151,14 @@ export class PaymentPage {
 
   _onPay = () => {
     const finalOrder = {
-      // date: new Date(),
       datatotal: this.datatotal,
     }
     console.log('finalOrder', finalOrder);
-    
+    this.pushdata();    
     this._addToOrders();
     this.navCtrl.push('ConfirmationPage', {
-    finalOrder
-  });
-    // this.navCtrl.push('OrdersPage', {
-    // this.navCtrl.push('ConfirmationPage', {
-    //   finalOrder
-    // });
+      finalOrder
+    });
   }
   
    /**
@@ -186,7 +181,6 @@ export class PaymentPage {
       datatotal: this.datatotal,
     }
     this.ordersService.newOrder(lastOrder);
-    this.pushdata();
     console.log('lastorder', lastOrder);
   }
 

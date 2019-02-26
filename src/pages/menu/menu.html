@@ -6,6 +6,14 @@
     <div text-center>
       <p>No. Kontrak: {{nokontrak}}</p>
     </div>
+    <ion-buttons (click)="totalproduk()" end>
+      <ion-badge *ngIf="cart.length > 0">{{ cart.length }}</ion-badge>
+      <!-- <button ion-button (click)="_closeModal()">Total</button> -->
+      <button ion-button>
+        <ion-icon item-end class="logout" style="color: dodgerblue" name="cart">
+        </ion-icon>
+      </button>
+    </ion-buttons>
 </ion-navbar>
 </ion-header>
 
