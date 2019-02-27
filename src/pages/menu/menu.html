@@ -6,24 +6,17 @@
     <div text-center>
       <p>No. Kontrak: {{nokontrak}}</p>
     </div>
-    <ion-buttons (click)="totalproduk()" end>
+    <ion-buttons end>
       <ion-badge *ngIf="cart.length > 0">{{ cart.length }}</ion-badge>
-      <!-- <button ion-button (click)="_closeModal()">Total</button> -->
       <button ion-button>
-        <ion-icon item-end class="logout" style="color: dodgerblue" name="cart">
-        </ion-icon>
       </button>
     </ion-buttons>
 </ion-navbar>
 </ion-header>
 
 <ion-content class="body">
-    <!-- <super-tabs *ngIf="isLastPage" scrollTabs="true" toolbarBackground="primary" toolbarColor="light" indicatorColor="light" tabsPlacement="top" (tabSelect)="onTabSelect($event)">
-        <super-tab *ngFor="let page of blokshome; let indexhome of blokshome[kontrak.blok_no]" [title]="page.blok_no" (click)="click(indexhome)"></super-tab>
-    </super-tabs>   -->
 <ion-list class="categoriesList">
   <ion-list-header *ngFor="let t of tahapan; let catId = index; let indextahap of tahapan[tahapan.kode_tahapan]" no-lines no-padding no-margin>
-      <!-- <ion-list-header *ngFor="let t of tahapan; let catId of tahapan[tahapan.kode_tahapan]" no-lines no-padding no-margin> -->
       <button no-lines (click)="_toggleCategory(catId, indextahap)">
         <div class="catContainer">
           <ion-icon style="color: orangered" name="aperture"></ion-icon>

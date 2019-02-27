@@ -113,22 +113,20 @@ export class BlokhomePage {
       this.accesstoken = data;
         this.auth.budgets(this.accesstoken, kodelokasi).subscribe((resp) => {
         // let blokhome = resp.kontrak;
+        
       }, (err) => {
         let error = err.json();
         this.globalService.toastInfo(error.message ? error.message : 'Failed, please check your internet connection...', 3000, 'bottom');
         console.log(err);
         });
       });
+      
     }
   
   _closeModal = () => {
     // this.navCtrl.setRoot('PaymentPage');
-    this.storage.get('cart').then((data) => {
-      this.cart = data;
-    });
     this.storage.get('datatotal').then((data) => {
       let datatotal = data;
-   
     // this.navCtrl.push('PaymentPage', {
     //     produk: this.cart,
     //     datatotal: datatotal
