@@ -212,10 +212,7 @@ addToCarts = (productId) => {
       console.log('addToCart: ',  this.jumlah);
     }
   }
-  
   // this.jumlah = this.bahan[productId].quantity;
-  this.cart.push(this.bahan[productId]);
-  this._totalPrice();
   let produk = {
     kode : this.bahan[productId].kode_bahan,
     bahan : this.bahan[productId].nama_bahan,
@@ -223,6 +220,9 @@ addToCarts = (productId) => {
     satuan : this.bahan[productId].satuan
   }
   console.log('produk: ', produk);
+  this.cart.push(produk);
+  this._totalPrice();
+  
   // this._onOrder();
 }
 
@@ -234,8 +234,8 @@ _aggregateCart = (cart) => {
     }
   });
   console.log('newCart: ', newCart);
-  // this.storage.set('cart', newCart);
   this.produk = newCart;
+  this.storage.set('cart', this.produk);
   return newCart;
 }
 _addToOrders = () => {

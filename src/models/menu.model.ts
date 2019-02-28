@@ -11,12 +11,12 @@ export class MenuGlobal {
 
 export class Order {
     date: Date;
-    datatotal: produk[];
+    datatotal: Produks[];
     // products: Product[];
     // produk: produk[];
 }
 
-export class produk {
+export class Produks {
     kode_bahan: string;
     nama_bahan: string;
     quantity: number;

@@ -54,7 +54,8 @@ export class PaymentPage {
   }
   
   ionViewCanEnter(){
-    
+    console.log('this.cart', this.cart);
+    console.log('this.datatotal', this.datatotal);
   }
 
   pushdata() {
@@ -82,6 +83,7 @@ export class PaymentPage {
     this.auth.order(this.token, pushdata).subscribe((resp) => {
       console.log('berhasil input', resp);
     }, (err) => {
+      console.log('err', err);
       let error = err.json();
       this.globalService.toastInfo(error.message ? error.message : 'Cari sinyal dan aktifkan koneksi jaringan anda !', 3000, 'bottom');
       // this.globalService.presentAlert('', 'Cari sinyal dan aktifkan koneksi jaringan anda !', 'Tutup', 'alert-register-to-project', () => {});
@@ -150,11 +152,9 @@ export class PaymentPage {
   }
 
   _onPay = () => {
-    const finalOrder = {
-      datatotal: this.datatotal,
-    }
+    const finalOrder = this.datatotal;
     console.log('finalOrder', finalOrder);
-    this.pushdata();    
+    this.pushdata();
     this._addToOrders();
     this.navCtrl.push('ConfirmationPage', {
       finalOrder
@@ -180,6 +180,7 @@ export class PaymentPage {
       // datatotal: this.produkall,
       datatotal: this.datatotal,
     }
+    const data = this.datatotal;
     this.ordersService.newOrder(lastOrder);
     console.log('lastorder', lastOrder);
   }

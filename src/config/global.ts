@@ -1,5 +1,5 @@
 let global = {
-    server: "local", // local, dev, production
+    server: "dev", // local, dev, production
     url_local: 'http://127.0.0.1:8000',
     url_dev: 'https://api.budget.hokiland.com',
     url_production: 'https://api.budget.hokiland.com',

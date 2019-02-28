@@ -3,11 +3,12 @@ import { IonicPage, Modal, ModalController, ModalOptions, NavController, NavPara
 // Services
 import { OrdersService } from '../../services/orders.service';
 // Model
-import { Order } from '../../models/menu.model'
+import { Order, Produks } from '../../models/menu.model';
 import { AuthProvider } from '../../providers/auth/auth';
 import { Storage } from '@ionic/storage';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { GlobalServiceProvider } from '../../providers/global-service/global-service';
+import {JsonConvert, OperationMode, ValueCheckingMode} from "json2typescript"
 
 @IonicPage()
 @Component({
@@ -105,7 +106,11 @@ export class OrdersPage {
    if (this.orders.length === 0) {
     this.globalService.showAlert();
    } else if (this.orders.length !== 0 || this.orders.length === null) {
-    let datatot = JSON.stringify(this.orders);
+    const datatot = JSON.stringify(this.orders).replace(/[\[\]']+/g, '').replace(/}|{{}/g, '').replace(/['"]+/g,'').replace(/(,)/g, ' ').replace(/({)/g, '');
+    let orderan = JSON.stringify(this.orders);
+    const datatotas = JSON.parse(orderan);
+    console.log('datatotas', datatotas);   
+
     // console.log('orders todaysDate', this.orders[0].date);
     //  let datablok = data.produk;
     // for (let i=0; i <= this.orders.length; i++) {
@@ -129,6 +134,31 @@ export class OrdersPage {
    }
   
  }
+
+ _aggregateCart = (cart) => {
+    let newCart = [];
+    cart.forEach(function(item) {
+     if(newCart.indexOf(item) < 0) {
+         newCart.push(item);
+      }
+    });
+    let jsonConvert: JsonConvert = new JsonConvert();
+    jsonConvert.operationMode = OperationMode.LOGGING; // print some debug data
+    jsonConvert.ignorePrimitiveChecks = false; // don't allow assigning number to string etc.
+    jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow null
+    jsonConvert.deserialize(this.orders, Produks);
+    // Map to the country class
+    // let produk: Produks;
+    try {
+      let datatots = this.orders;
+      console.log('produk', datatots);
+  } catch (e) {
+      console.log((<Error>e));
+  }
+    console.log('newCart', newCart);
+    this.produkall = newCart;
+    return newCart;
+  }
 
 //  ngOnInit() {
 //   const items = this.ordersService.getOrders();
